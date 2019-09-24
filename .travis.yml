@@ -1,0 +1,34 @@
+language: node_js
+node_js:
+  - "10"
+branches:
+  only:
+    - website
+    - /^renovate.*$/
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+cache:
+  directories:
+    - "node_modules"
+before_install:
+  - echo Branch $TRAVIS_BRANCH
+  - git checkout $TRAVIS_BRANCH
+install:
+  - npm install
+deploy:
+  - provider: script
+    script: bash scripts/release-website.sh
+    on:
+      branch:
+        - website
+  - provider: releases
+    user: "$GITHUB_USER"
+    api_key: "$GITHUB_TOKEN"
+    file_glob: true
+    on:
+      branch:
+        - website

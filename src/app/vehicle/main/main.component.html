@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="drawer.toggle()">
+      <fa-icon [icon]="faBars" size="md"></fa-icon>
+    </button>
+    <span i18n="@@VEHICLES">Véhicules</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-drawer-container autosize>
+  <mat-drawer #drawer [mode]="mode" [opened]="open">
+    <mat-list routerLinkActive="active">
+      <a mat-list-item routerLink="overview" [routerLinkActive]="['active']">
+        <fa-icon [icon]="faArchive"></fa-icon>&nbsp;<span i18n="@@EUC">Unicycles</span>
+      </a>
+      <mat-divider></mat-divider>
+    </mat-list>
+  </mat-drawer>
+
+  <router-outlet></router-outlet>
+
+</mat-drawer-container>

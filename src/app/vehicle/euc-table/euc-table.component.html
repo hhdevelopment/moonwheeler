@@ -1,0 +1,183 @@
+<div class="container">
+  <mat-form-field>
+    <input matInput [(ngModel)]="config.filter" (keyup)="applyFilter()" placeholder="Filter">
+  </mat-form-field>
+  <div class="flex-spacer"></div>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <fa-icon [icon]="faColumns" size="lg"></fa-icon>
+  </button>
+</div>
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortChange($event)">
+  <!-- Android Column -->
+  <ng-container matColumnDef="android">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Android</th>
+    <td mat-cell *matCellDef="let element"> {{element.android.iv}} </td>
+  </ng-container>
+
+  <!-- battery-capacity Column -->
+  <ng-container matColumnDef="battery-capacity">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Battery Capacity</th>
+    <td mat-cell *matCellDef="let element"> {{element['battery-capacity'].iv}} </td>
+  </ng-container>
+
+  <!-- brand Column -->
+  <ng-container matColumnDef="brand">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Brand</th>
+    <td mat-cell *matCellDef="let element"> {{element.brand.iv}} </td>
+  </ng-container>
+
+  <!-- charging-time Column -->
+  <ng-container matColumnDef="charging-time">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Charging Time</th>
+    <td mat-cell *matCellDef="let element"> {{element['charging-time'].iv}} </td>
+  </ng-container>
+
+  <!-- distance-max Column -->
+  <ng-container matColumnDef="distance-max">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Distance Max</th>
+    <td mat-cell *matCellDef="let element"> {{element['distance-max']['fr-FR']}} </td>
+  </ng-container>
+
+  <!-- distance-min Column -->
+  <ng-container matColumnDef="distance-min">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Distance Min</th>
+    <td mat-cell *matCellDef="let element"> {{element['distance-min']['fr-FR']}} </td>
+  </ng-container>
+
+  <!-- factory-speed Column -->
+  <ng-container matColumnDef="factory-speed">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Factory Speed</th>
+    <td mat-cell *matCellDef="let element"> {{element['factory-speed']['fr-FR']}} </td>
+  </ng-container>
+
+  <!-- front-light Column -->
+  <ng-container matColumnDef="front-light">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Front Light</th>
+    <td mat-cell *matCellDef="let element"> {{element['front-light'].iv}} </td>
+  </ng-container>
+
+  <!-- gap Column -->
+  <ng-container matColumnDef="gap">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Gap</th>
+    <td mat-cell *matCellDef="let element"> {{element.gap.iv}} </td>
+  </ng-container>
+
+  <!-- horn Column -->
+  <ng-container matColumnDef="horn">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Horn</th>
+    <td mat-cell *matCellDef="let element"> {{element.horn.iv}} </td>
+  </ng-container>
+
+  <!-- id Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Id</th>
+    <td mat-cell *matCellDef="let element"> {{element.id.iv}} </td>
+  </ng-container>
+
+  <!-- input Column -->
+  <ng-container matColumnDef="input">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Input</th>
+    <td mat-cell *matCellDef="let element"> {{element.input.iv}} </td>
+  </ng-container>
+
+  <!-- ios Column -->
+  <ng-container matColumnDef="ios">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ios</th>
+    <td mat-cell *matCellDef="let element"> {{element.ios.iv}} </td>
+  </ng-container>
+
+  <!-- ip-rating Column -->
+  <ng-container matColumnDef="ip-rating">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ip Rating</th>
+    <td mat-cell *matCellDef="let element"> {{element['ip-rating'].iv}} </td>
+  </ng-container>
+
+  <!-- max-slope Column -->
+  <ng-container matColumnDef="max-slope">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Max Slope</th>
+    <td mat-cell *matCellDef="let element"> {{element['max-slope'].iv}} </td>
+  </ng-container>
+
+  <!-- max-speed Column -->
+  <ng-container matColumnDef="max-speed">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Max Speed</th>
+    <td mat-cell *matCellDef="let element"> {{element['max-speed']['fr-FR']}} </td>
+  </ng-container>
+
+  <!-- model Column -->
+  <ng-container matColumnDef="model">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Model</th>
+    <td mat-cell *matCellDef="let element"> {{element.model.iv}} </td>
+  </ng-container>
+
+  <!-- operating-temperature-low Column -->
+  <ng-container matColumnDef="operating-temperature-low">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Operating Temperature Low</th>
+    <td mat-cell *matCellDef="let element"> {{element['operating-temperature-low']['fr-FR']}} </td>
+  </ng-container>
+
+  <!-- operating-temperature-top Column -->
+  <ng-container matColumnDef="operating-temperature-top">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Operating Temperature Top</th>
+    <td mat-cell *matCellDef="let element"> {{element['operating-temperature-top']['fr-FR']}} </td>
+  </ng-container>
+
+  <!-- output Column -->
+  <ng-container matColumnDef="output">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Output</th>
+    <td mat-cell *matCellDef="let element"> {{element.output.iv}} </td>
+  </ng-container>
+
+  <!-- payload Column -->
+  <ng-container matColumnDef="payload">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Payload</th>
+    <td mat-cell *matCellDef="let element"> {{element.payload.iv}} </td>
+  </ng-container>
+
+  <!-- power-rating Column -->
+  <ng-container matColumnDef="power-rating">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Power Rating</th>
+    <td mat-cell *matCellDef="let element"> {{element['power-rating'].iv}} </td>
+  </ng-container>
+
+  <!-- rear-light Column -->
+  <ng-container matColumnDef="rear-light">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rear Light</th>
+    <td mat-cell *matCellDef="let element"> {{element['rear-light'].iv}} </td>
+  </ng-container>
+
+  <!-- tire-pressure Column -->
+  <ng-container matColumnDef="tire-pressure">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tire Pressure</th>
+    <td mat-cell *matCellDef="let element"> {{element['tire-pressure'].iv}} </td>
+  </ng-container>
+
+  <!-- tire-size Column -->
+  <ng-container matColumnDef="tire-size">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tire Size</th>
+    <td mat-cell *matCellDef="let element"> {{element['tire-size'].iv}} </td>
+  </ng-container>
+
+  <!-- turn-signal Column -->
+  <ng-container matColumnDef="turn-signal">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Turn Signal</th>
+    <td mat-cell *matCellDef="let element"> {{element['turn-signal'].iv}} </td>
+  </ng-container>
+
+  <!-- weight Column -->
+  <ng-container matColumnDef="weight">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight</th>
+    <td mat-cell *matCellDef="let element"> {{element.weight.iv}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="config.displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: config.displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons (page)="changePage($event)"></mat-paginator>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item *ngFor="let column of columns" (click)="switchColumn(column)">
+    <fa-icon [icon]="config.displayedColumns.includes(column)?faCheck:faUncheck" size="lg">
+    </fa-icon>&nbsp;&nbsp;{{column}}
+  </button>
+</mat-menu>
