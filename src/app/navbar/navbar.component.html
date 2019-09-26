@@ -4,9 +4,16 @@
   </a>
   <a mat-button routerLink="main" class="wide_screen">
     <fa-icon [icon]="faAngular" size="lg"></fa-icon>
-    &nbsp;<span i18n="@@">HHDEV</span>
+    &nbsp;<span i18n="@@CORP">HHDEV</span>
   </a>
-  <a mat-button routerLink="ev" i18n="@@VEHICLE">Véhicules</a>
+  <a mat-button routerLink="vehicles" i18n="@@VEHICLES">Véhicules</a>
+  <a mat-button routerLink="stores" i18n="@@STORES">Magasins</a>
+  <a mat-button routerLink="accessories" i18n="@@ACCESSORIES">Accessoires</a>
+  <a mat-button routerLink="legislations" i18n="@@LEGISLATIONS">Législations</a>
+  <a mat-button routerLink="insurances" i18n="@@ASSURANCES">Assurances</a>
+  <a mat-button routerLink="blog" i18n="@@BLOG">Blog</a>
+  <a mat-button routerLink="tests" i18n="@@TESTS">Tests</a>
+  <a mat-button routerLink="events" i18n="@@EVENTS">Events</a>
   <div class="flex-spacer"></div>
   <app-locale-selector [locales]="locales"></app-locale-selector>
   <a mat-icon-button href="https://github.com/hhdevelopment/ev" rel="noopener noreferrer" target="_blank">

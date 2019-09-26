@@ -9,3 +9,36 @@ mat-form-field {
   font-size: 14px;
   width: 100%;
 }
+.container-table {
+  overflow-x: auto;
+}
+
+.center {
+  text-align: center;
+}
+
+tr.detail-row {
+  height: 0;
+}
+tr.element-row {
+  cursor: pointer;
+}
+tr.element-row:not(.expanded-row):hover {
+  background: #3f51b5;
+}
+tr.element-row:not(.expanded-row):hover > td {
+  color: white;
+}
+/*
+tr.element-row:not(.expanded-row):active {
+  background: #efefef;
+}*/
+
+.element-row td {
+  border-bottom-width: 0;
+}
+
+.element-detail {
+  overflow: hidden;
+  display: flex;
+}

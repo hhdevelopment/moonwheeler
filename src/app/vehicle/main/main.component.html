@@ -9,10 +9,21 @@
 <mat-drawer-container autosize>
   <mat-drawer #drawer [mode]="mode" [opened]="open">
     <mat-list routerLinkActive="active">
-      <a mat-list-item routerLink="overview" [routerLinkActive]="['active']">
-        <fa-icon [icon]="faArchive"></fa-icon>&nbsp;<span i18n="@@EUC">Unicycles</span>
+      <a mat-list-item routerLink="euc" [routerLinkActive]="['active']">
+        <fa-icon [icon]="faArchive"></fa-icon>&nbsp;<span i18n="@@EUCS">E-Roues</span>
       </a>
-      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="escooter" [routerLinkActive]="['active']">
+        <fa-icon [icon]="faArchive"></fa-icon>&nbsp;<span i18n="@@ESCOOTERS">E-Trotinettes</span>
+      </a>
+      <a mat-list-item routerLink="esk8" [routerLinkActive]="['active']">
+        <fa-icon [icon]="faArchive"></fa-icon>&nbsp;<span i18n="@@ESK8S">E-Skates</span>
+      </a>
+      <a mat-list-item routerLink="segway" [routerLinkActive]="['active']">
+        <fa-icon [icon]="faArchive"></fa-icon>&nbsp;<span i18n="@@SEGWAYS">Gyropodes</span>
+      </a>
+      <a mat-list-item routerLink="eroller" [routerLinkActive]="['active']">
+        <fa-icon [icon]="faArchive"></fa-icon>&nbsp;<span i18n="@@EROLLERS">E-Rollers</span>
+      </a>
     </mat-list>
   </mat-drawer>
 

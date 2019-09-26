@@ -8,9 +8,9 @@ import {SharedModule} from './shared/shared.module';
 import {RedirectComponent} from './shared';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/main', pathMatch: 'full'},
+  {path: '', loadChildren: './vehicle/vehicle.module#VehicleModule'},
   {path: 'main', component: HomepageComponent},
-  {path: 'ev', loadChildren: './vehicle/vehicle.module#VehicleModule'},
+  {path: 'vehicles', loadChildren: './vehicle/vehicle.module#VehicleModule'},
   {path: '**', component: RedirectComponent},
 ];
 

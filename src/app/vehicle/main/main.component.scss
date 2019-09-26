@@ -1,0 +1,10 @@
+a {
+  text-decoration: none;
+}
+a:hover,
+a:hover:active, a:hover.active {
+  color: darkorange;
+}
+a:active, a.active {
+  color: dodgerblue;
+}
