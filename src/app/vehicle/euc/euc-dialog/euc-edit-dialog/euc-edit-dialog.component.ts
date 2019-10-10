@@ -25,6 +25,7 @@ export class EucEditDialogComponent implements OnInit {
 
   brands: string[];
   tireTypes: string[];
+  batteryTypes: string[];
   ipRatings: string[];
   years: number[];
   weights: number[] = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35];
@@ -48,6 +49,9 @@ export class EucEditDialogComponent implements OnInit {
     });
     this.objectsService.listTireTypes().subscribe((tireTypes: string[]) => {
       this.tireTypes = tireTypes.sort();
+    });
+    this.objectsService.listBatteryTypes().subscribe((batteryTypes: string[]) => {
+      this.batteryTypes = batteryTypes.sort();
     });
     this.currentYear = new Date().getFullYear();
     this.years = [undefined, ...((start, end) => Array.from({length: (end - start)}, (v, k) => k + start))(2010, this.currentYear + 3)];

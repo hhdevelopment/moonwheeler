@@ -99,6 +99,7 @@
           </mat-label>
         </div>
       </div>
+      <br>
     </mat-expansion-panel>
 
     <mat-expansion-panel>
@@ -143,37 +144,33 @@
 
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@BATTERY_CHARACTERISTICS">Caractéristiques de la batterie</mat-panel-title>
+        <mat-panel-title i18n="@@ENGINE_AND_BATTERY_CHARACTERISTICS">Caractéristiques du moteur et de la batterie</mat-panel-title>
       </mat-expansion-panel-header>
-      <div fxLayout="row" fxLayoutGap="10px">
-        <mat-form-field fxFlex>
-          <input type="number" [(ngModel)]="item.batteryCapacity" i18n-placeholder="@@BATTERY_CAPACITY" matInput placeholder="Capacité de la batterie">
-          <span matSuffix>Watt</span>
-        </mat-form-field>
-        <div fxFlex>&nbsp;</div>
-        <mat-form-field fxFlex>
-          <input type="number" [(ngModel)]="item.chargingTime" i18n-placeholder="@@CHARGING_TIME" matInput placeholder="Temps de chargement">
-          <span matSuffix i18n="@@HOURS">Heures</span>
-        </mat-form-field>
-      </div>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@ENGINE_CHARACTERISTICS">Caractéristiques du moteur</mat-panel-title>
-      </mat-expansion-panel-header>
-      <div fxLayout="row" fxLayoutGap="10px">
-        <mat-form-field fxFlex>
+      <div fxLayout="row wrap" fxLayoutGap="2%">
+        <mat-form-field fxFlex="48%">
           <input type="number" [(ngModel)]="item.powerRating" i18n-placeholder="@@POWER_RATING" matInput placeholder="Puissance moteur">
           <span matSuffix>Watt</span>
         </mat-form-field>
-        <div fxFlex>&nbsp;</div>
-        <div fxLayout="column" fxFlex style="height: 50px">
-          <app-slider thumbLabel [value]="[item.operatingTemperatureLow, item.operatingTemperatureTop]" min="-40" max="60" step="1" (valueChange)="updateOperatingTemperatures($event)"></app-slider>
-          <mat-label class="mat-small">
+        <div fxLayout="column" fxFlex="48%" style="height: 50px">
+          <mat-label class="mat-small" style="padding-left: 10px">
             <span i18n="@@OPERATING_TEMPERATURE_RATE">Plage de fonctionnement</span>({{item.operatingTemperatureLow || '?'}}~{{item.operatingTemperatureTop || '?'}}`)
           </mat-label>
+          <app-slider thumbLabel [value]="[item.operatingTemperatureLow, item.operatingTemperatureTop]" min="-40" max="60" step="1" (valueChange)="updateOperatingTemperatures($event)"></app-slider>
         </div>
+        <mat-form-field  fxFlex="32%">
+          <mat-label i18n="@@BATTERY_TYPE">Type de batterie</mat-label>
+          <mat-select [(ngModel)]="item.batteryType">
+            <mat-option *ngFor="let batteryType of batteryTypes" [value]="batteryType">{{batteryType}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="32%">
+          <input type="number" [(ngModel)]="item.batteryCapacity" i18n-placeholder="@@BATTERY_CAPACITY" matInput placeholder="Capacité de la batterie">
+          <span matSuffix>Watt</span>
+        </mat-form-field>
+        <mat-form-field fxFlex="32%">
+          <input type="number" [(ngModel)]="item.chargingTime" i18n-placeholder="@@CHARGING_TIME" matInput placeholder="Temps de chargement">
+          <span matSuffix i18n="@@HOURS">Heures</span>
+        </mat-form-field>
       </div>
     </mat-expansion-panel>
 

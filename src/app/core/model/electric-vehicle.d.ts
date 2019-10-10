@@ -19,6 +19,7 @@ interface ElectricVehicle extends FirebaseDocument {
   turnSignal: boolean;
   horn: boolean;
 
+  batteryType: string;
   batteryCapacity: number;
   chargingTime: number;
 
