@@ -11,6 +11,9 @@ import {join} from 'path';
 import {ngExpressEngine} from '@nguniversal/express-engine';
 // Import module map for lazy loading
 import {provideModuleMap} from '@nguniversal/module-map-ngfactory-loader';
+// Polyfills required for Firebase
+(global as any).WebSocket = require('ws');
+(global as any).XMLHttpRequest = require('xhr2');
 
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
