@@ -1,0 +1,4 @@
+<mat-toolbar *ngIf="login && roles">
+  <app-row-action-button *ngIf="actions.edit" [enabled]="roles.allowUpdate || item?.contributors[0]?.login === login" [icon]="faPencilAlt" (action)="click($event, 'edit')"></app-row-action-button>
+  <app-row-action-button *ngIf="actions.delete" [enabled]="roles.allowDelete || item?.contributors[0]?.login === login" [icon]="faTimes" (action)="click($event, 'delete')"></app-row-action-button>
+</mat-toolbar>

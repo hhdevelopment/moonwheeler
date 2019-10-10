@@ -1,0 +1,3 @@
+interface WithContributors {
+  contributors: Contributor[];
+}

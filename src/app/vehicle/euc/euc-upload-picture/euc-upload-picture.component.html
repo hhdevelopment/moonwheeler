@@ -1,0 +1,16 @@
+<input type="file" #fileInput style="display: none" (change)="onFileAdded()" accept="image/jpeg, image/png"/>
+<div *ngIf="!!url; then picture else upload">
+  <!-- template will replace this div -->
+</div>
+<ng-template #upload>
+  <div fxFlex (click)="setPicture()" i18n-matTooltip="@@ADD_IMAGE" matTooltip="Ajouter une image">
+    <div class="flex-spacer"></div>
+    <div fxFlex class="middle">
+      <fa-icon [icon]="faFileDownload" size="4x"></fa-icon>
+    </div>
+    <div class="flex-spacer"></div>
+  </div>
+</ng-template>
+<ng-template #picture>
+  <div class="picture" (click)="setPicture()" [ngStyle]="{'background-image':' url(' + url + ')'}"></div>
+</ng-template>

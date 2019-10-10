@@ -2,17 +2,20 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MainComponent} from './main/main.component';
 import {VehicleRoutingModule} from './vehicle-routing.module';
-import {EucTableComponent} from './euc-table/euc-table.component';
 import {SharedModule} from '../shared/shared.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {EUC_SNACK_BAR_COMPONENTS} from './euc/euc-snack-bar';
+import {EUC_DIALOG_COMPONENTS} from './euc/euc-dialog';
+import {EUC_COMPONENTS} from './euc';
 
 
 @NgModule({
-  declarations: [MainComponent, EucTableComponent],
+  declarations: [MainComponent, EUC_COMPONENTS, EUC_DIALOG_COMPONENTS, EUC_SNACK_BAR_COMPONENTS],
   imports: [
     CommonModule,
     SharedModule,
-    VehicleRoutingModule
-  ]
+    VehicleRoutingModule,
+  ],
+  entryComponents: [EUC_DIALOG_COMPONENTS, EUC_SNACK_BAR_COMPONENTS]
 })
-export class VehicleModule { }
+export class VehicleModule {
+}

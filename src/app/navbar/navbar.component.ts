@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
-import {faAngular, faGithub, faLinkedin} from '@fortawesome/free-brands-svg-icons';
+import {faAngular, faGithub, faGoogle, faLinkedin} from '@fortawesome/free-brands-svg-icons';
+import {AuthService} from '../core/service/auth/auth.service';
+import {faLock, faUser} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-navbar',
@@ -8,9 +10,15 @@ import {faAngular, faGithub, faLinkedin} from '@fortawesome/free-brands-svg-icon
 })
 export class NavBarComponent {
 
+  constructor(public auth: AuthService) {
+  }
+
+  faGoogle = faGoogle;
   faAngular = faAngular;
   faGithub = faGithub;
   faLinkedin = faLinkedin;
+  faLock = faLock;
+  faUser = faUser;
 
   locales = [
     {path: '/en-us/', label: 'English US', devPort: 4201},
