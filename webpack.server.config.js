@@ -7,9 +7,16 @@ module.exports = {
   target: 'node',
   mode: 'none',
   // this makes sure we include node_modules and other 3rd party libraries
-  externals: [/node_modules/],
+  externals: [
+    /node_modules/,
+    /^firebase/
+  ],
   output: {
+    // Export a UMD of the webpacked server.ts & deps, for
+    // rendering in Cloud Functions
     path: path.join(__dirname, 'dist'),
+    library: 'app',
+    libraryTarget: 'umd',
     filename: '[name].js'
   },
   module: {
