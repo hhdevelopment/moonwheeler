@@ -87,7 +87,7 @@
     "@angular/compiler-cli": "8.2.10",
     "@angular/language-service": "8.2.10",
     "@types/jasmine": "3.4.4",
-    "@types/jasminewd2": "2.0.6",
+    "@types/jasminewd2": "2.0.8",
     "@types/node": "8.10.54",
     "codecov": "3.6.1",
     "codelyzer": "5.1.1",
