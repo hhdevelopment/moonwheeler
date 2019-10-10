@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MainComponent} from './main/main.component';
-import {EucTableComponent} from './euc-table/euc-table.component';
+import {EucTableComponent} from './euc/euc-table/euc-table.component';
 
 const routes: Routes = [
     {

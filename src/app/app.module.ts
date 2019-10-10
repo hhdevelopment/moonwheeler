@@ -9,6 +9,9 @@ import {NavBarComponent} from './navbar/navbar.component';
 import {SharedModule} from './shared/shared.module';
 import {CoreModule} from './core/core.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AngularFireModule} from '@angular/fire';
+import {environment} from '../environments/environment';
+import {AngularFireStorageModule} from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     NavBarComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'moonwheeler' }),
+    BrowserModule.withServerTransition({appId: 'moonwheeler'}),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,

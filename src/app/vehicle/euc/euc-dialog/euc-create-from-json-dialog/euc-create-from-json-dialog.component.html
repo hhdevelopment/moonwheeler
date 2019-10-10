@@ -1,0 +1,16 @@
+<h1 mat-dialog-title i18n="@@CREATE_EUC_FROM_JSON">Créer une monoroue à partir d'un json</h1>
+<div mat-dialog-content fxLayout="column">
+  <div fxLayout="row" fxLayoutGap="10px">
+    <mat-form-field class="full-width">
+      <textarea matInput rows="40" i18n-placeholder="@@JSON"placeholder="json" [(ngModel)]="json"></textarea>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <span class="flex-spacer"></span>
+  <button mat-dialog-close mat-button color="warn" i18n="@@CANCEL">Annuler</button>
+  <button mat-button color="primary" (click)="save()">
+    <fa-icon [icon]="faSave" size="lg"></fa-icon>&nbsp;&nbsp;&nbsp;
+    <span i18n="@@SAVE">Sauvegarder</span>
+  </button>
+</div>

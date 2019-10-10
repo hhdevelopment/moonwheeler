@@ -22,4 +22,29 @@
   <a class="wide_screen" mat-icon-button href="https://www.linkedin.com/in/francois-achache" rel="noopener noreferrer" target="_blank">
     <fa-icon [icon]="faLinkedin" size="lg"></fa-icon>
   </a>
+  <div *ngIf="auth.user$ | async; then authenticated else guest">
+    <!-- template will replace this div -->
+  </div>
 </mat-toolbar>
+
+
+
+<!-- User NOT logged in -->
+<ng-template #guest>
+  <button mat-icon-button [matMenuTriggerFor]="menuLogin">
+    <fa-icon [icon]="faUser" size="lg"></fa-icon>
+  </button>
+  <mat-menu #menuLogin="matMenu">
+    <button mat-menu-item (click)="auth.googleLogin()">
+      <fa-icon [icon]="faGoogle"></fa-icon>&nbsp;<span i18n="@@CONNECT_GOOGLE">Se connecter avec Google</span>
+    </button>
+  </mat-menu>
+</ng-template>
+
+
+<!-- User logged in -->
+<ng-template #authenticated>
+  <button *ngIf="auth.user$ | async as user" mat-icon-button (click)="auth.signOut()" i18n-matTooltip="@@DISCONNECT" matTooltip="Déconnecter {{user.displayName}}">
+    <img  [src]="user.photoURL">
+  </button>
+</ng-template>

@@ -15,8 +15,15 @@ body {
   flex-grow: 1;
 }
 
-.flex-h20 {
+.flex-w20 {
   width: 20px;
+}
+.flex-h20 {
+  height: 20px;
+}
+
+.full-width {
+  width: 100%;
 }
 
 .small_screen {
@@ -29,4 +36,12 @@ body {
   .small_screen {
     display: initial !important;
   }
+}
+.floating-bottom-right {
+  position: absolute !important;
+  right: 20px;
+  bottom: 20px;
+}
+.floating-right {
+  float: right;
 }
