@@ -1,5 +1,5 @@
 {
-  "root": "https://hhangular.hhdev.fr",
+  "root": "https://moonwheeler.hhdev.fr",
   "dist": "dist/website",
   "entries": ["en-us", "fr-fr"],
   "routes" : [
