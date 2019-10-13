@@ -11,7 +11,7 @@ export class AddFabButtonComponent {
   add: EventEmitter<void> = new EventEmitter<void>();
 
   @Input()
-  roles: Partial<Roles>;
+  claims: Partial<Claims>;
 
   faPlus = faPlus;
 }

@@ -32,3 +32,6 @@ deploy:
     on:
       branch:
         - website
+  - provider: firebase
+    token:
+      secure: "$FIREBASE_TOKEN"

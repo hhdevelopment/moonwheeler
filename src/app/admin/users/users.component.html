@@ -1,0 +1,73 @@
+<div class="container-header">
+  <mat-form-field>
+    <input matInput [(ngModel)]="filter" (keyup)="applyFilter()" i18n-placeholder="@@FILTER" placeholder="Filtre">
+  </mat-form-field>
+  <button mat-icon-button i18n-matTooltip="@@REFRESH" matTooltip="Actualiser">
+    <fa-icon [icon]="faSync" size="lg" (click)="load()"></fa-icon>
+  </button>
+</div>
+<div *ngIf="!showSpinner" class="container-table" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+    <!-- picture Column -->
+    <ng-container matColumnDef="photoURL">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <app-avatar [photoURL]="element.photoURL"></app-avatar>
+      </td>
+    </ng-container>
+
+    <!-- email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><span>Email</span></th>
+      <td mat-cell *matCellDef="let element">{{element.email || element.providerData[0].email}}</td>
+    </ng-container>
+
+    <!-- provider Column -->
+    <ng-container matColumnDef="provider">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@LOGIN_PROVIDER">Service</span></th>
+      <td mat-cell *matCellDef="let element" [ngSwitch]="element.providerData[0].providerId" [matTooltip]="element.providerData[0].providerId">
+        <fa-icon *ngSwitchCase="'facebook.com'" [icon]="faFacebook" size="2x"></fa-icon>
+        <fa-icon *ngSwitchCase="'google.com'" [icon]="faGoogle" size="2x"></fa-icon>
+        <fa-icon *ngSwitchCase="'github.com'" [icon]="faGithub" size="2x"></fa-icon>
+      </td>
+    </ng-container>
+
+    <!-- createdAt Column -->
+    <ng-container matColumnDef="creationTime">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@CREATION_TIME">Date de création</span></th>
+      <td mat-cell *matCellDef="let element">{{element.metadata.creationTime  | date:'medium'}}</td>
+    </ng-container>
+
+    <!-- lastConn Column -->
+    <ng-container matColumnDef="lastSignInTime">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@LAST_SIGN_IN_TIME">Dernière connexion</span></th>
+      <td mat-cell *matCellDef="let element">{{element.metadata.lastSignInTime  | date:'medium'}}</td>
+    </ng-container>
+
+    <!-- uid Column -->
+    <ng-container matColumnDef="uid">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><span>UID</span></th>
+      <td mat-cell *matCellDef="let element">{{element.uid}}</td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div class="element-detail" [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+          <app-user-edit fxFlex [photoURL]="element.photoURL" [claims]="element.customClaims" [uid]="element.uid"></app-user-edit>
+       </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="element-row"
+        [class.expanded-row]="expandedElement === element"
+        (click)="clickItem(element)"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+  </table>
+</div>
+<div *ngIf="showSpinner" style="height: 160px">
+  <div fxFlex></div>
+  <mat-spinner></mat-spinner>
+  <div fxFlex></div>
+</div>

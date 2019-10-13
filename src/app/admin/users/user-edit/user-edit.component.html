@@ -1,0 +1,7 @@
+<span class="flex-w20"></span>
+<div fxFlex fxLayout="row wrap" fxLayoutGap="2%">
+  <mat-checkbox fxFlex="25%" *ngFor="let key of Object.keys(claims)" [(ngModel)]="claims[key]">{{key}}</mat-checkbox>
+</div>
+<button mat-stroked-button color="primary" (click)="saveClaims()" i18n-matTooltip="@@SAVE" matTooltip="Sauvegarder">
+  <fa-icon size="3x" [icon]="faSave"></fa-icon>
+</button>

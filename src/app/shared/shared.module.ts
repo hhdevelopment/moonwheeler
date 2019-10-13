@@ -5,6 +5,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import {
   MatAutocompleteModule,
   MatButtonModule,
+  MatCardModule,
   MatCheckboxModule,
   MatChipsModule,
   MatDialogModule,
@@ -14,7 +15,7 @@ import {
   MatInputModule,
   MatListModule,
   MatMenuModule,
-  MatPaginatorModule,
+  MatPaginatorModule, MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
@@ -29,14 +30,19 @@ import {
   MatTreeModule
 } from '@angular/material';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {StoreModule} from '@hhangular/store';
+import {StoreModule, USER_ID} from '@hhangular/store';
 import {MarkdownModule} from 'ngx-markdown';
 import {HttpClient} from '@angular/common/http';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {LayoutModule} from '@angular/cdk/layout';
 import {SHARED_COMPONENTS} from './index';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { SafePipe } from './safe/safe.pipe';
+import {UserService} from '../core/service/user/user.service';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {AngularFireStorageModule} from '@angular/fire/storage';
+import {AngularFireFunctionsModule} from '@angular/fire/functions';
+import {AngularFireAuthGuardModule} from '@angular/fire/auth-guard';
 
 const MODULES: any[] = [
   FlexLayoutModule,
@@ -67,7 +73,16 @@ const MODULES: any[] = [
   MatAutocompleteModule,
   MatSnackBarModule,
   MatSelectModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatCardModule,
+  MatProgressSpinnerModule
+];
+const FIRE_BASE = [
+  AngularFireAuthModule,
+  AngularFireAuthGuardModule,
+  AngularFirestoreModule,
+  AngularFireStorageModule,
+  AngularFireFunctionsModule,
 ];
 
 @NgModule({
@@ -75,6 +90,7 @@ const MODULES: any[] = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    FIRE_BASE,
     MODULES,
     MarkdownModule.forRoot({loader: HttpClient}),
     StoreModule,
@@ -85,18 +101,15 @@ const MODULES: any[] = [
     ReactiveFormsModule,
     MarkdownModule,
     StoreModule,
+    FIRE_BASE,
     SHARED_COMPONENTS,
   ],
   declarations: [
     SHARED_COMPONENTS,
   ],
   providers: [
-    {
-      provide: APP_BASE_HREF,
-      useFactory: (platformLocation: PlatformLocation) => platformLocation.getBaseHrefFromDOM(),
-      deps: [PlatformLocation]
-    },
-//    {provide: USER_ID, useFactory: () => new BehaviorSubject<string>('ok')},
+    {provide: APP_BASE_HREF, useFactory: (platformLocation: PlatformLocation) => platformLocation.getBaseHrefFromDOM(), deps: [PlatformLocation]},
+//    {provide: USER_ID, useFactory: (userService: UserService) => userService.getUid(), deps: [UserService]},
   ],
 })
 export class SharedModule {

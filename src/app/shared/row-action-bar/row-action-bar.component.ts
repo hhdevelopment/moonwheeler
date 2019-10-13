@@ -14,9 +14,9 @@ export class RowActionBarComponent {
   item?: WithContributors;
 
   @Input()
-  roles: Partial<Roles>;
+  claims: Partial<Claims>;
   @Input()
-  login: string;
+  uid: string;
 
   @Input()
   actions: { edit: boolean, delete: boolean } = {edit: false, delete: false};

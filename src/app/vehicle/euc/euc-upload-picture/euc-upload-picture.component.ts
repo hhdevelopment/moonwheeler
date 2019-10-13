@@ -1,26 +1,30 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {faFileDownload} from '@fortawesome/free-solid-svg-icons';
-import {UploadService} from '../../../core/service/upload/upload.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireStorage, AngularFireStorageReference} from '@angular/fire/storage';
-import {Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {filter, flatMap} from 'rxjs/operators';
+import {UserService} from '../../../core/service/user/user.service';
+import {User} from 'firebase';
 
 @Component({
   selector: 'app-euc-upload-picture',
   templateUrl: './euc-upload-picture.component.html',
   styleUrls: ['./euc-upload-picture.component.scss']
 })
-export class EucUploadPictureComponent implements OnInit {
+export class EucUploadPictureComponent {
+
+  private _path: string;
 
   faFileDownload = faFileDownload;
-  _path: string;
-  sub: Subscription;
+  url: string;
+  uploading = false;
 
   constructor(
     private afStorage: AngularFireStorage,
     private afs: AngularFirestore,
-    private uploadService: UploadService) {
+    private userService: UserService
+  ) {
   }
 
   @ViewChild('fileInput', {static: true})
@@ -28,27 +32,18 @@ export class EucUploadPictureComponent implements OnInit {
 
   @Input()
   set path(p: string) {
+    this._path = p;
     this.uploading = false;
     this.url = null;
-    if (!!p) {
-      const ref: AngularFireStorageReference = this.afStorage.ref(`${p}`);
-      this.sub = ref.getDownloadURL().subscribe(url => {
-        this.url = url;
-      });
-    }
+    this.defineUrlFromPath(p);
+  }
+
+  get path(): string {
+    return this._path;
   }
 
   @Output()
-  uploadPicture: EventEmitter<string> = new EventEmitter<string>();
-
-  url: string;
-
-  uploading = false;
-  uploadSuccessful = false;
-
-
-  ngOnInit() {
-  }
+  pictureUpdate: EventEmitter<string> = new EventEmitter<string>();
 
   setPicture() {
     if (!this.uploading) {
@@ -61,19 +56,47 @@ export class EucUploadPictureComponent implements OnInit {
     const files: FileList = this.file.nativeElement.files;
     if (files.length) {
       const path = `contents/${this.afs.createId()}`;
-      this.uploadService.uploadFile(path, files.item(0)).pipe(
+      this.uploadPicture(path, files.item(0)).pipe(
         filter(p => p === 100),
-      ).subscribe(p => {
-        if (!!this.path) {
-          const ref: AngularFireStorageReference = this.afStorage.ref(path);
-          ref.delete().subscribe(() => {
-            this.path = path;
-            this.uploadPicture.emit(path);
-          });
-        } else {
-          this.path = path;
-          this.uploadPicture.emit(path);
-        }
+        flatMap(p => {
+          return this.deletePreviousPicture();
+        })
+      ).toPromise().then(() => {
+        this.path = path;
+        this.pictureUpdate.emit(path);
+      });
+    }
+  }
+
+  private uploadPicture(path: string, file: File): Observable<number> {
+    const ref: AngularFireStorageReference = this.afStorage.ref(path);
+    return this.userService.getUser().pipe(
+      flatMap((user: User) => {
+        const metadata: any = {
+          createdBy: user.email,
+          createdById: user.uid,
+          type: file.type,
+          name: file.name
+        };
+        return ref.put(file, metadata).percentageChanges();
+      })
+    );
+  }
+
+  private deletePreviousPicture(): Observable<any> {
+    if (!!this.path) {
+      const ref: AngularFireStorageReference = this.afStorage.ref(this.path);
+      return ref.delete();
+    } else {
+      return of(null);
+    }
+  }
+
+  private defineUrlFromPath(p: string) {
+    if (!!p) {
+      const ref: AngularFireStorageReference = this.afStorage.ref(`${p}`);
+      ref.getDownloadURL().toPromise().then(url => {
+        this.url = url;
       });
     }
   }

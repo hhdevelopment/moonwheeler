@@ -1,0 +1,4 @@
+<img *ngIf="photoURL else noPict" class="picture size-{{size}}" [src]="photoURL">
+<ng-template #noPict>
+  <fa-icon [icon]="faUserCircle" [size]="size"></fa-icon>
+</ng-template>

@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="drawer.toggle()">
+      <fa-icon [icon]="faBars" size="md"></fa-icon>
+    </button>
+    <span i18n="@@ADMIN">Administration</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-drawer-container autosize>
+  <mat-drawer #drawer [mode]="mode" [opened]="open">
+    <mat-list routerLinkActive="active">
+      <a mat-list-item routerLink="users" [routerLinkActive]="['active']">
+        <fa-icon [icon]="faUsers"></fa-icon>&nbsp;<span i18n="@@USERS">Utilisateurs</span>
+      </a>
+    </mat-list>
+  </mat-drawer>
+
+  <router-outlet></router-outlet>
+
+</mat-drawer-container>

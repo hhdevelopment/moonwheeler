@@ -1,25 +1,44 @@
+<span style="display: none" #coeffFromKm i18n="@@COEFF_FROM_KM">1</span>
+<span style="display: none" #coeffFromCm i18n="@@COEFF_FROM_CM">1</span>
 <div class="container-header">
   <mat-form-field>
-    <input matInput [(ngModel)]="config.filter" (keyup)="applyFilter()" i18n-placeholder="@@FILTER"
-           placeholder="Filtre">
+    <input matInput [(ngModel)]="config.filter" (keyup)="applyFilter()" i18n-placeholder="@@FILTER" placeholder="Filtre">
   </mat-form-field>
   <div class="flex-spacer"></div>
-  <button mat-icon-button [matMenuTriggerFor]="menu">
+  <app-add-button [claims]="claims" (click)="openEditUnicycleDialog({}, $event.ctrlKey)"></app-add-button>
+  <button mat-icon-button [matMenuTriggerFor]="menuColumns">
     <fa-icon [icon]="faColumns" size="lg"></fa-icon>
   </button>
 </div>
-<div class="container-table">
+<mat-menu #menuColumns="matMenu">
+  <div mat-menu-item>
+    <mat-checkbox (click)="$event.stopPropagation()"
+                  (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+    </mat-checkbox>&nbsp;&nbsp;<span i18n="@@X_COLUMNS_SELECTED">{{selection.selected.length}} colonnes sélectionnées</span>
+  </div>
+  <div cdkDropList (cdkDropListDropped)="drop($event)">
+    <div mat-menu-item cdkDrag *ngFor="let column of config.columns" (click)="$event ? selection.toggle(column) : null">
+      <fa-icon cdkDragHandle [icon]="faGripLines" size="lg"></fa-icon>&nbsp;&nbsp;
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(column) : null"
+                    [checked]="selection.isSelected(column)">
+      </mat-checkbox>
+      &nbsp;&nbsp;{{column}}
+    </div>
+  </div>
+</mat-menu>
+
+<div class="container-table" class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort (matSortChange)="sortChange($event)">
     <!-- brand Column -->
     <ng-container matColumnDef="brand-model" sticky>
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="brand"><span i18n="@@BRAND">Marque</span>/<span
-        i18n="@@MODEL">Modèle</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="brand"><span i18n="@@BRAND_MODEL">Marque / Modèle</span></th>
       <td mat-cell *matCellDef="let element">
         <span>{{element.brand}}&nbsp;{{element.model}}</span><br>
-        <span *ngIf="roles$ | async as roles">
-          <span *ngIf="roles.allowViewAuthor" class="mat-card-subtitle">
-            {{element?.contributors[0].login}}
-          </span>
+        <span *ngIf="claims && claims.allowViewAuthor" class="mat-card-subtitle">
+          {{element?.contributors[0].email}}
         </span>
       </td>
     </ng-container>
@@ -27,28 +46,25 @@
     <!-- battery-capacity Column -->
     <ng-container matColumnDef="battery-capacity">
       <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@BATTERY">Batterie</span></th>
-      <td mat-cell *matCellDef="let element">{{element.batteryCapacity}}Wh</td>
+      <td mat-cell *matCellDef="let element">{{element.batteryCapacity}}&nbsp;Wh</td>
     </ng-container>
 
     <!-- charging-time Column -->
     <ng-container matColumnDef="charging-time">
       <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@CHARGING_TIME">Temps de charge</span></th>
-      <td mat-cell *matCellDef="let element">{{element.chargingTime}}h</td>
+      <td mat-cell *matCellDef="let element">{{element.chargingTime}}&nbsp;h</td>
     </ng-container>
 
     <!-- range Column -->
     <ng-container matColumnDef="range">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="distanceMax"><span i18n="@@RANGE">Autonomie</span></th>
       <td mat-cell *matCellDef="let element">
-        <span
-          *ngIf="element.distanceMin && element.distanceMax && element.distanceMin !== element.distanceMax"> {{element.distanceMin}}
-          ~{{element.distanceMax}}</span>
-        <span
-          *ngIf="!element.distanceMin && element.distanceMin !== element.distanceMax"> {{element.distanceMax}}</span>
-        <span
-          *ngIf="!element.distanceMax && element.distanceMin !== element.distanceMax"> {{element.distanceMin}}</span>
-        <span *ngIf="element.distanceMin === element.distanceMax"> {{element.distanceMax}}</span>
-        <span i18n="@@MILES">km</span></td>
+        <span *ngIf="element.distanceMin && element.distanceMax && element.distanceMin !== element.distanceMax"> {{element.distanceMin | i18nNumber:coeffFromKm}}~{{element.distanceMax | i18nNumber:coeffFromKm}}</span>
+        <span *ngIf="!element.distanceMin && element.distanceMin !== element.distanceMax"> {{element.distanceMax | i18nNumber:coeffFromKm}}</span>
+        <span *ngIf="!element.distanceMax && element.distanceMin !== element.distanceMax"> {{element.distanceMin | i18nNumber:coeffFromKm}}</span>
+        <span *ngIf="element.distanceMin === element.distanceMax"> {{element.distanceMax | i18nNumber:coeffFromKm}}</span>
+        &nbsp;<ng-container i18n="@@MILES">km</ng-container>
+      </td>
     </ng-container>
 
     <!-- factory-speed Column -->
@@ -60,10 +76,9 @@
         </div>
       </th>
       <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.factorySpeed !== element.maxSpeed"> {{element.factorySpeed}}
-          ~{{element.maxSpeed}}</span>
-        <span *ngIf="element.factorySpeed === element.maxSpeed"> {{element.maxSpeed}}</span>
-        <span i18n="@@MPH">km/h</span></td>
+        <span *ngIf="element.factorySpeed !== element.maxSpeed"> {{element.factorySpeed | i18nNumber:coeffFromKm}}~{{element.maxSpeed | i18nNumber:coeffFromKm}}</span>
+        <span *ngIf="element.factorySpeed === element.maxSpeed"> {{element.maxSpeed | i18nNumber:coeffFromKm}}</span>
+        &nbsp;<ng-container i18n="@@MPH">km/h</ng-container></td>
     </ng-container>
 
     <!-- ip-rating Column -->
@@ -75,19 +90,19 @@
     <!-- max-slope Column -->
     <ng-container matColumnDef="max-slope">
       <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@MAX_SLOPE">Pente max</span></th>
-      <td mat-cell *matCellDef="let element">{{element.maxSlope}}°</td>
+      <td mat-cell *matCellDef="let element">{{element.maxSlope}}&nbsp;°</td>
     </ng-container>
 
     <!-- weight Column -->
     <ng-container matColumnDef="weight">
       <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@WEIGHT">Poids</span></th>
-      <td mat-cell *matCellDef="let element">{{element.weight}}kg</td>
+      <td mat-cell *matCellDef="let element">{{element.weight}}&nbsp;kg</td>
     </ng-container>
 
     <!-- gap Column -->
     <ng-container matColumnDef="gap">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Gap</th>
-      <td mat-cell *matCellDef="let element">{{element.gap}}<span i18n="@@INCHES">cm</span></td>
+      <td mat-cell *matCellDef="let element">{{element.gap| i18nNumber:coeffFromCm}}&nbsp;<ng-container i18n="@@INCHES">cm</ng-container></td>
     </ng-container>
 
     <!-- front-light Column -->
@@ -111,20 +126,20 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header><span
         i18n="@@OPERATING_TEMPERATURE">Plage de Températures</span></th>
       <td mat-cell *matCellDef="let element">{{element.operatingTemperatureLow}}
-        ~{{element.operatingTemperatureTop}}°
+        ~{{element.operatingTemperatureTop}}&nbsp;°
       </td>
     </ng-container>
 
     <!-- payload Column -->
     <ng-container matColumnDef="payload">
       <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@PAYLOAD">Poids conducteur</span></th>
-      <td mat-cell *matCellDef="let element">{{element.payload}}kg</td>
+      <td mat-cell *matCellDef="let element">{{element.payload}}&nbsp;kg</td>
     </ng-container>
 
     <!-- power-rating Column -->
     <ng-container matColumnDef="power-rating">
       <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@POWER_RATING">Puissance</span></th>
-      <td mat-cell *matCellDef="let element">{{element.powerRating}}W</td>
+      <td mat-cell *matCellDef="let element">{{element.powerRating}}&nbsp;W</td>
     </ng-container>
 
     <!-- rear-light Column -->
@@ -184,7 +199,7 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef class="th-toolbar"></th>
       <td mat-cell *matCellDef="let element" class="td-toolbar">
-        <app-row-action-bar *ngIf="element == overflownElement" [item]="element" [roles]="roles$ | async" [login]="login$ | async" [actions]="{delete: true, edit: true}" (action)="actionOnItem($event)"
+        <app-row-action-bar *ngIf="element == overflownElement" [item]="element" [claims]="claims" [uid]="uid" [actions]="{delete: true, edit: true}" (action)="actionOnItem($event)"
                             [@toolbarAppear]></app-row-action-bar>
       </td>
     </ng-container>
@@ -208,26 +223,8 @@
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
   </table>
 </div>
-<app-add-fab-button [roles]="roles$ | async" (click)="openEditUnicycleDialog({}, $event.ctrlKey)"></app-add-fab-button>
+<!--
+<app-add-fab-button [claims]="claims" (click)="openEditUnicycleDialog({}, $event.ctrlKey)"></app-add-fab-button>
 <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons
                (page)="changePage($event)"></mat-paginator>
-
-<mat-menu #menu="matMenu">
-  <div mat-menu-item>
-    <mat-checkbox (click)="$event.stopPropagation()"
-                  (change)="$event ? masterToggle() : null"
-                  [checked]="selection.hasValue() && isAllSelected()"
-                  [indeterminate]="selection.hasValue() && !isAllSelected()">
-    </mat-checkbox>&nbsp;&nbsp;<span i18n="@@X_COLUMNS_SELECTED">{{selection.selected.length}} colonnes sélectionnées</span>
-  </div>
-  <div cdkDropList (cdkDropListDropped)="drop($event)">
-    <div mat-menu-item cdkDrag *ngFor="let column of config.columns" (click)="$event ? selection.toggle(column) : null">
-      <fa-icon cdkDragHandle [icon]="faGripLines" size="lg"></fa-icon>&nbsp;&nbsp;
-      <mat-checkbox (click)="$event.stopPropagation()"
-                    (change)="$event ? selection.toggle(column) : null"
-                    [checked]="selection.isSelected(column)">
-      </mat-checkbox>
-      &nbsp;&nbsp;{{column}}
-    </div>
-  </div>
-</mat-menu>
+-->

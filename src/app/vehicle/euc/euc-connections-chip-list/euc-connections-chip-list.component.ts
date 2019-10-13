@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
 import {filter, map} from 'rxjs/operators';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
@@ -19,6 +19,7 @@ export class EucConnectionsChipListComponent implements OnInit {
 
   connCtrl = new FormControl();
   filteredConnexions: Observable<string[]>;
+  @Input()
   connections: string[] = [];
   allConnections: string[] = [];
 

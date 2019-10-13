@@ -1,4 +1,5 @@
 interface Contributor {
-  login: string;
+  email: string;
+  uid: string;
   at: number;
 }

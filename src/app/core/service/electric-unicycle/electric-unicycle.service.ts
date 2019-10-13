@@ -3,6 +3,8 @@ import {Observable} from 'rxjs';
 import {AngularFirestore, CollectionReference, Query} from '@angular/fire/firestore';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {UserService} from '../user/user.service';
+import {flatMap} from 'rxjs/operators';
+import {User} from 'firebase';
 
 const PATH = 'electricUnicycles';
 
@@ -11,12 +13,9 @@ const PATH = 'electricUnicycles';
 })
 export class ElectricUnicycleService {
 
-  private login: string;
-
   constructor(
     private userService: UserService,
     private afs: AngularFirestore) {
-    this.userService.getLogin().subscribe(login => this.login = login);
   }
 
   list(queryFn?: (ref: CollectionReference) => Query): Observable<ElectricUnicycle[]> {
@@ -32,21 +31,29 @@ export class ElectricUnicycleService {
     return this.save(euc, euc.id, euc.createdAt);
   }
 
-  private save(euc: Partial<ElectricUnicycle>, id: string, createdAt?: number) {
-    const now: number = new Date().getTime();
-    const payload: Partial<ElectricUnicycle> = {
-      id,
-      ...euc,
-      createdAt: createdAt || now,
-      updatedAt: now,
-      updatedBy: this.login
-    };
-    if (!payload.contributors) {
-      payload.contributors = [];
-      payload.createdBy = this.login;
-    }
-    payload.contributors.push({login: this.login, at: now});
-    return fromPromise(this.afs.collection<ElectricUnicycle>(PATH).doc(id).set(payload));
+  private save(euc: Partial<ElectricUnicycle>, id: string, createdAt?: number): Observable<void> {
+    const at: number = new Date().getTime();
+    return this.userService.getUser().pipe(
+      flatMap((user: User) => {
+        const uid: string = user.uid;
+        const email: string = user.email || user.providerData[0].email;
+        const payload: Partial<ElectricUnicycle> = {
+          id,
+          ...euc,
+          createdAt: createdAt || at,
+          updatedAt: at,
+          updatedBy: email,
+          updatedById: uid
+        };
+        if (!payload.contributors) {
+          payload.contributors = [];
+          payload.createdBy = email;
+          payload.createdById = uid;
+        }
+        payload.contributors.push({email, uid, at});
+        return fromPromise(this.afs.collection<ElectricUnicycle>(PATH).doc(id).set(payload));
+      })
+    );
   }
 
   delete(euc: Partial<ElectricUnicycle>): Observable<void> {
