@@ -23,6 +23,13 @@ install:
   - cd ..
   - npm install
 deploy:
+  - provider: firebase
+    skip_cleanup: true
+    token:
+      secure: "$FIREBASE_TOKEN"
+    on:
+      branch:
+        - website
   - provider: script
     script: bash scripts/release-website.sh
     on:
@@ -32,12 +39,6 @@ deploy:
     user: "$GITHUB_USER"
     api_key: "$GITHUB_TOKEN"
     file_glob: true
-    on:
-      branch:
-        - website
-  - provider: firebase
-    token:
-      secure: "$FIREBASE_TOKEN"
     on:
       branch:
         - website
