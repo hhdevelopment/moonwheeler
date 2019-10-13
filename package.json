@@ -44,6 +44,7 @@
     "build:servers": "npm run build:server:fr-fr && npm run build:server:en-us",
     "build:client-and-server-bundles": "npm run build:websites:prod && npm run build:servers",
     "webpack:server": "webpack --config webpack.server.config.js --progress --colors",
+    "heroku-prebuild": "cd functions && npm install && cd .. && npm install",
     "heroku-postbuild": "npm run build:ssr && npm run copy:static && npm run build:sitemap",
     "docker:build": "docker build -t h2dev/moonwheeler .",
     "docker:run": "docker run -d --rm -p80:80 --name moonwheeler h2dev/moonwheeler"
