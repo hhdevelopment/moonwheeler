@@ -14,6 +14,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/moonwheeler",
+            "i18nLocale": "fr-fr",
             "aot": true,
             "index": "src/index.html",
             "main": "src/main.ts",

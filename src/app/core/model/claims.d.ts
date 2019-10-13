@@ -1,8 +1,9 @@
-interface Roles {
+interface Claims {
   allowCreate: boolean;
   allowDelete: boolean;
   allowUpdate: boolean;
   allowViewAuthor: boolean;
-  clientId: string;
-  clientSecret: string;
+  allowCreateFromJson: boolean;
+  admin: boolean;
+  allowEditClaims: boolean;
 }

@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
@@ -11,7 +11,6 @@ import {CoreModule} from './core/core.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
-import {AngularFireStorageModule} from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -22,7 +21,6 @@ import {AngularFireStorageModule} from '@angular/fire/storage';
   imports: [
     BrowserModule.withServerTransition({appId: 'moonwheeler'}),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule,
     BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,

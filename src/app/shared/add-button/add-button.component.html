@@ -1,0 +1,3 @@
+<button *ngIf="!!claims && claims.allowCreate" mat-icon-button color="accent" i18n-matTooltip="@@ADD_VEHICLE" matTooltip="Ajouter un nouveau véhicule" (click)="add.emit()">
+  <fa-icon [icon]="faPlus"></fa-icon>
+</button>

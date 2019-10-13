@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="INCHES" datatype="html">
         <source>cm</source>
-        <target>inches</target>
+        <target>in</target>
       </trans-unit>
       <trans-unit id="EUCS" datatype="html">
         <source>E-Roues</source>
@@ -42,7 +42,15 @@
         <source>E-Rollers</source>
         <target>E-Rollers</target>
       </trans-unit>
-
+      <trans-unit id="COEFF_FROM_KM" datatype="html">
+        <source>1</source>
+        <target>0.62137</target>
+      </trans-unit>
+      <trans-unit id="COEFF_FROM_CM" datatype="html">
+        <source>1</source>
+        <target>0.39370</target>
+      </trans-unit>
+      0.39370
     </body>
   </file>
 </xliff>

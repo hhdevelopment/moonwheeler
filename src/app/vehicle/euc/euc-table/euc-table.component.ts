@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatPaginator, MatSort, MatTableDataSource, PageEvent, Sort, SortDirection} from '@angular/material';
 import {LocalStored} from '@hhangular/store';
 import {faColumns, faGripLines} from '@fortawesome/free-solid-svg-icons';
@@ -8,8 +8,6 @@ import {SelectionChange, SelectionModel} from '@angular/cdk/collections';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {toolbarAppear} from '../../../shared/animations';
 import {UserService} from '../../../core/service/user/user.service';
-import {RolesService} from '../../../core/service/roles/roles.service';
-import {Observable} from 'rxjs';
 import {EucEditDialogComponent} from '../euc-dialog/euc-edit-dialog/euc-edit-dialog.component';
 import {EucCreateFromJsonDialogComponent} from '../euc-dialog/euc-create-from-json-dialog/euc-create-from-json-dialog.component';
 import {ElectricUnicycleService} from '../../../core/service/electric-unicycle/electric-unicycle.service';
@@ -34,7 +32,6 @@ export class EucTableComponent implements OnInit {
   constructor(
     private afStorage: AngularFireStorage,
     private electricUnicycleService: ElectricUnicycleService,
-    private rolesService: RolesService,
     private userService: UserService,
     private dialog: MatDialog
   ) {
@@ -49,9 +46,9 @@ export class EucTableComponent implements OnInit {
   overflownElement: ElectricUnicycle | null;
   url: string;
 
-  @LocalStored(27)
+  @LocalStored(1)
   config = {
-    pageSize: 5,
+    pageSize: 10,
     sort: {active: null, direction: 'asc'},
     displayedColumns: ['brand-model', 'weight', 'tire-size', 'range', 'speeds', 'payload', 'max-slope', 'ip-rating', 'actions'],
     visibleColumns: ['brand-model', 'weight', 'tire-size', 'range', 'speeds', 'payload', 'max-slope', 'ip-rating'],
@@ -62,8 +59,8 @@ export class EucTableComponent implements OnInit {
     filter: null
   };
 
-  roles$: Observable<Partial<Roles>>;
-  login$: Observable<string>;
+  claims: Partial<Claims>;
+  uid: string;
   dataSource = new MatTableDataSource<ElectricUnicycle>();
 
   @ViewChild(MatPaginator, {static: true})
@@ -73,8 +70,12 @@ export class EucTableComponent implements OnInit {
   sort: MatSort;
 
   ngOnInit() {
-    this.login$ = this.userService.getLogin();
-    this.roles$ = this.rolesService.getRoles();
+    this.userService.getClaims().subscribe((claims: Claims) => {
+      this.claims = claims;
+    });
+    this.userService.getUid().subscribe((uid: string) => {
+      this.uid = uid;
+    });
     this.selection = new SelectionModel<string>(true, this.config.visibleColumns);
     this.selection.changed.subscribe((selChange: SelectionChange<string>) => {
       this.config.displayedColumns = selChange.source.selected;
@@ -85,12 +86,12 @@ export class EucTableComponent implements OnInit {
       this.config.displayedColumns.push('actions');
     });
     this.electricUnicycleService.list().subscribe(electricUnicycles => this.dataSource.data = electricUnicycles);
-    this.dataSource.paginator = this.paginator;
+//    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.dataSource.sort.active = this.config.sort.active;
     this.dataSource.sort.direction = this.config.sort.direction as SortDirection;
-    this.paginator.pageIndex = this.config.pageIndex;
-    this.paginator.pageSize = this.config.pageSize;
+//    this.paginator.pageIndex = this.config.pageIndex;
+//    this.paginator.pageSize = this.config.pageSize;
     this.dataSource.filter = this.config.filter;
   }
 

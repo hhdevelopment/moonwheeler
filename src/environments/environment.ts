@@ -12,10 +12,9 @@ export const environment = {
     storageBucket: 'moonwheeler-797cb.appspot.com',
     messagingSenderId: '342508166598',
     appId: '1:342508166598:web:b60ca39b6abc29b18fe6c7',
-    measurementId: 'G-DPS852DC9S'
+    measurementId: 'G-DHLF33T2LE'
   }
 };
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

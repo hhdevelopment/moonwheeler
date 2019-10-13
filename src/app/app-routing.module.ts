@@ -6,10 +6,14 @@ import {filter} from 'rxjs/operators';
 import {LocalStored} from '@hhangular/store';
 import {SharedModule} from './shared/shared.module';
 import {RedirectComponent} from './shared';
+import {canActivate, hasCustomClaim} from '@angular/fire/auth-guard';
+
+const adminOnly = hasCustomClaim('admin');
 
 const routes: Routes = [
   {path: '', loadChildren: './vehicle/vehicle.module#VehicleModule'},
   {path: 'main', component: HomepageComponent},
+  {path: 'admin', loadChildren: './admin/admin.module#AdminModule', ...canActivate(adminOnly)},
   {path: 'vehicles', loadChildren: './vehicle/vehicle.module#VehicleModule'},
   {path: '**', component: RedirectComponent},
 ];

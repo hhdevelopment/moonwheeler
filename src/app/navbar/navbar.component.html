@@ -7,20 +7,18 @@
     &nbsp;<span i18n="@@CORP">HHDEV</span>
   </a>
   <a mat-button routerLink="vehicles" i18n="@@VEHICLES">Véhicules</a>
-  <a mat-button routerLink="stores" i18n="@@STORES">Magasins</a>
+  <a mat-button routerLink="stores"><fa-icon [icon]="faStore" size="lg"></fa-icon>&nbsp;&nbsp;<span i18n="@@STORES">Magasins</span></a>
   <a mat-button routerLink="accessories" i18n="@@ACCESSORIES">Accessoires</a>
-  <a mat-button routerLink="legislations" i18n="@@LEGISLATIONS">Législations</a>
-  <a mat-button routerLink="insurances" i18n="@@ASSURANCES">Assurances</a>
+  <a mat-button routerLink="legislations" i18n="@@LEGISLATIONS"><fa-icon [icon]="faBalanceScale" size="lg"></fa-icon>&nbsp;&nbsp;Législations</a>
+  <a mat-button routerLink="insurances" i18n="@@ASSURANCES"><fa-icon [icon]="faCarCrash" size="lg"></fa-icon>&nbsp;&nbsp;Assurances</a>
   <a mat-button routerLink="blog" i18n="@@BLOG">Blog</a>
   <a mat-button routerLink="tests" i18n="@@TESTS">Tests</a>
-  <a mat-button routerLink="events" i18n="@@EVENTS">Events</a>
+  <a mat-button routerLink="events" i18n="@@EVENTS"><fa-icon [icon]="faCalendarCheck" size="lg"></fa-icon>&nbsp;&nbsp;Events</a>
+  <a mat-button routerLink="admin" *ngIf="claims?.admin"><fa-icon [icon]="faUsersCog" size="lg"></fa-icon>&nbsp;&nbsp;<span i18n="@@ADMIN">Admin</span></a>
   <div class="flex-spacer"></div>
   <app-locale-selector [locales]="locales"></app-locale-selector>
-  <a mat-icon-button href="https://github.com/hhdevelopment/ev" rel="noopener noreferrer" target="_blank">
+  <a mat-icon-button href="https://github.com/hhdevelopment/moonwheeler" rel="noopener noreferrer" target="_blank">
     <fa-icon [icon]="faGithub" size="lg"></fa-icon>
-  </a>
-  <a class="wide_screen" mat-icon-button href="https://www.linkedin.com/in/francois-achache" rel="noopener noreferrer" target="_blank">
-    <fa-icon [icon]="faLinkedin" size="lg"></fa-icon>
   </a>
   <div *ngIf="auth.user$ | async; then authenticated else guest">
     <!-- template will replace this div -->
@@ -36,7 +34,13 @@
   </button>
   <mat-menu #menuLogin="matMenu">
     <button mat-menu-item (click)="auth.googleLogin()">
-      <fa-icon [icon]="faGoogle"></fa-icon>&nbsp;<span i18n="@@CONNECT_GOOGLE">Se connecter avec Google</span>
+      <fa-icon [icon]="faGoogle" size="lg"></fa-icon>&nbsp;<span i18n="@@CONNECT_GOOGLE">Se connecter avec Google</span>
+    </button>
+    <button mat-menu-item (click)="auth.githubLogin()">
+      <fa-icon [icon]="faGithub" size="lg"></fa-icon>&nbsp;<span i18n="@@CONNECT_GITHUB">Se connecter avec Github</span>
+    </button>
+    <button mat-menu-item (click)="auth.facebookLogin()">
+      <fa-icon [icon]="faFacebook" size="lg"></fa-icon>&nbsp;<span i18n="@@CONNECT_FACEBOOK">Se connecter avec Facebook</span>
     </button>
   </mat-menu>
 </ng-template>
@@ -44,7 +48,19 @@
 
 <!-- User logged in -->
 <ng-template #authenticated>
-  <button *ngIf="auth.user$ | async as user" mat-icon-button (click)="auth.signOut()" i18n-matTooltip="@@DISCONNECT" matTooltip="Déconnecter {{user.displayName}}">
-    <img  [src]="user.photoURL">
+  <button *ngIf="auth.user$ | async as user" mat-icon-button i18n-matTooltip="@@DISCONNECT" matTooltip="Déconnecter {{user.displayName || user.email  || user.uid}}" [matMenuTriggerFor]="menuLogged">
+    <img  *ngIf="!!user.photoURL" [src]="user.photoURL">
+    <fa-icon *ngIf="!user.photoURL" [icon]="faUser" size="lg"></fa-icon>
   </button>
+  <mat-menu #menuLogged="matMenu">
+    <button mat-menu-item (click)="auth.signOut()">
+      <fa-icon [icon]="faUnlock"></fa-icon>&nbsp;<span i18n="@@DISCONNECT">Se déconnecter</span>
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="menuClaims" i18n="@@CLAIMS">Droits</button>
+  </mat-menu>
+  <mat-menu #menuClaims="matMenu">
+    <span mat-menu-item *ngFor="let claim of activeClaims" disabled>
+      <fa-icon [icon]="faIdBadge" size="lg"></fa-icon>&nbsp;<span i18n="@@CONNECT_GITHUB">{{claim}}</span>
+    </span>
+  </mat-menu>
 </ng-template>

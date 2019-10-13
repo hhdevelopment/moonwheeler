@@ -1,7 +1,9 @@
 interface FirebaseDocument extends WithContributors {
   id: string;
   createdBy: string;
+  createdById: string;
   createdAt: number;
-  updatedAt: number;
   updatedBy: string;
+  updatedById: string;
+  updatedAt: number;
 }

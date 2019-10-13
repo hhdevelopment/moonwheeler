@@ -29,5 +29,5 @@ interface ElectricVehicle extends FirebaseDocument {
 
   android: boolean;
   ios: boolean;
-  connection: string;
+  connections: string;
 }

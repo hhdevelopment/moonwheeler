@@ -1,0 +1,34 @@
+.container-header {
+  display: flex;
+}
+mat-form-field {
+  padding-left: 20px;
+  font-size: 14px;
+  width: 100%;
+}
+.container-table {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  padding-bottom: 50px;
+}
+tr.detail-row {
+  height: 0;
+}
+tr.element-row {
+  cursor: pointer;
+}
+tr.element-row:not(.expanded-row):hover {
+  background: #3f51b5;
+}
+tr.element-row:not(.expanded-row):hover > td {
+  color: white;
+}
+.element-row td {
+  border-bottom-width: 0;
+}
+.element-detail {
+  overflow: hidden;
+  display: flex;
+}
