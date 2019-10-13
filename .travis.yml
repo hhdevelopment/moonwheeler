@@ -18,6 +18,9 @@ before_install:
   - echo Branch $TRAVIS_BRANCH
   - git checkout $TRAVIS_BRANCH
 install:
+  - cd functions
+  - npm install
+  - cd ..
   - npm install
 deploy:
   - provider: firebase
