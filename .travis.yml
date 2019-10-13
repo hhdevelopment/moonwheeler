@@ -19,6 +19,7 @@ before_install:
   - git checkout $TRAVIS_BRANCH
 install:
   - npm install
+  - cd functions && npm install && cd ..
 deploy:
   - provider: script
     script: bash scripts/release-website.sh
