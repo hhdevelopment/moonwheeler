@@ -45,13 +45,13 @@
 
     <!-- battery-capacity Column -->
     <ng-container matColumnDef="battery-capacity">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@BATTERY">Batterie</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="batteryCapacity"><span i18n="@@BATTERY">Batterie</span></th>
       <td mat-cell *matCellDef="let element">{{element.batteryCapacity}}&nbsp;Wh</td>
     </ng-container>
 
     <!-- charging-time Column -->
     <ng-container matColumnDef="charging-time">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@CHARGING_TIME">Temps de charge</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="chargingTime"><span i18n="@@CHARGING_TIME">Temps de charge</span></th>
       <td mat-cell *matCellDef="let element">{{element.chargingTime}}&nbsp;h</td>
     </ng-container>
 
@@ -83,31 +83,31 @@
 
     <!-- ip-rating Column -->
     <ng-container matColumnDef="ip-rating">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@IP_RATING">Indice de protection</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="ipRating"><span i18n="@@IP_RATING">Indice de protection</span></th>
       <td mat-cell *matCellDef="let element">{{element.ipRating}}</td>
     </ng-container>
 
     <!-- max-slope Column -->
     <ng-container matColumnDef="max-slope">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@MAX_SLOPE">Pente max</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="maxSlope"><span i18n="@@MAX_SLOPE">Pente max</span></th>
       <td mat-cell *matCellDef="let element">{{element.maxSlope}}&nbsp;°</td>
     </ng-container>
 
     <!-- weight Column -->
     <ng-container matColumnDef="weight">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@WEIGHT">Poids</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="weight"><span i18n="@@WEIGHT">Poids</span></th>
       <td mat-cell *matCellDef="let element">{{element.weight}}&nbsp;kg</td>
     </ng-container>
 
     <!-- gap Column -->
     <ng-container matColumnDef="gap">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Gap</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="gap">Gap</th>
       <td mat-cell *matCellDef="let element">{{element.gap| i18nNumber:coeffFromCm}}&nbsp;<ng-container i18n="@@INCHES">cm</ng-container></td>
     </ng-container>
 
     <!-- front-light Column -->
     <ng-container matColumnDef="front-light">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@FRONT_LIGHT">Feu avant</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="frontLight"><span i18n="@@FRONT_LIGHT">Feu avant</span></th>
       <td mat-cell *matCellDef="let element" class="center">
         <fa-icon [icon]="element.frontLight?faCheck:faUncheck" size="lg"></fa-icon>
       </td>
@@ -115,7 +115,7 @@
 
     <!-- horn Column -->
     <ng-container matColumnDef="horn">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@HORN">Avertisseur sonore</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="horn"><span i18n="@@HORN">Avertisseur sonore</span></th>
       <td mat-cell *matCellDef="let element" class="center">
         <fa-icon [icon]="element.horn?faCheck:faUncheck" size="lg"></fa-icon>
       </td>
@@ -123,7 +123,7 @@
 
     <!-- operating-temperature-low Column -->
     <ng-container matColumnDef="operating-temperature">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="operatingTemperatureTop"><span
         i18n="@@OPERATING_TEMPERATURE">Plage de Températures</span></th>
       <td mat-cell *matCellDef="let element">{{element.operatingTemperatureLow}}
         ~{{element.operatingTemperatureTop}}&nbsp;°
@@ -132,19 +132,19 @@
 
     <!-- payload Column -->
     <ng-container matColumnDef="payload">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@PAYLOAD">Poids conducteur</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="payload"><span i18n="@@PAYLOAD">Poids conducteur</span></th>
       <td mat-cell *matCellDef="let element">{{element.payload}}&nbsp;kg</td>
     </ng-container>
 
     <!-- power-rating Column -->
     <ng-container matColumnDef="power-rating">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@POWER_RATING">Puissance</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="powerRating"><span i18n="@@POWER_RATING">Puissance</span></th>
       <td mat-cell *matCellDef="let element">{{element.powerRating}}&nbsp;W</td>
     </ng-container>
 
     <!-- rear-light Column -->
     <ng-container matColumnDef="rear-light">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@REAR_LIGHT">Feu arrière</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="rearLight"><span i18n="@@REAR_LIGHT">Feu arrière</span></th>
       <td mat-cell *matCellDef="let element" class="center">
         <fa-icon [icon]="element.rearLight?faCheck:faUncheck" size="lg"></fa-icon>
       </td>
@@ -152,28 +152,28 @@
 
     <!-- tire-pressure Column -->
     <ng-container matColumnDef="tire-pressure">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@TIRE_PRESSURE">Pression pneu</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="tirePressure"><span i18n="@@TIRE_PRESSURE">Pression pneu</span></th>
       <td mat-cell *matCellDef="let element"><span *ngIf="element.tirePressure">{{element.tirePressure}}
         bar</span></td>
     </ng-container>
 
     <!-- tire-size Column -->
     <ng-container matColumnDef="tire-size">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@TIRE_SIZE">Taille pneu</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="tireSize"><span i18n="@@TIRE_SIZE">Taille pneu</span></th>
       <td mat-cell *matCellDef="let element">{{element.tireSize}}"</td>
     </ng-container>
 
     <!-- tire-type Column -->
     <ng-container matColumnDef="tire-type">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@TIRE_TYPE">Type pneu</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="tireType"><span i18n="@@TIRE_TYPE">Type pneu</span></th>
       <td mat-cell *matCellDef="let element">
-        <span i18n="@@TIRE_TYPE_VALUE">{element['tireType'], select, Inflatable {Gonflable} Full {Plein} Other {Autre}}</span>
+        <span i18n="@@TIRE_TYPE_VALUE">{element.tireType, select, Inflatable {Gonflable} Full {Plein} Other {Autre}}</span>
       </td>
     </ng-container>
 
     <!-- turn-signal Column -->
     <ng-container matColumnDef="turn-signal">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span i18n="@@TURN_SIGNAL">Clignotants</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="turnSignal"><span i18n="@@TURN_SIGNAL">Clignotants</span></th>
       <td mat-cell *matCellDef="let element" class="center">
         <fa-icon [icon]="element.turnSignal?faCheck:faUncheck" size="lg"></fa-icon>
       </td>
@@ -181,7 +181,7 @@
 
     <!-- Android Column -->
     <ng-container matColumnDef="android">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span>Application Android</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="android"><span>Application Android</span></th>
       <td mat-cell *matCellDef="let element" class="center">
         <fa-icon [icon]="element.android?faCheck:faUncheck" size="lg"></fa-icon>
       </td>
@@ -189,7 +189,7 @@
 
     <!-- ios Column -->
     <ng-container matColumnDef="ios">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Application Ios</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="ios">Application Ios</th>
       <td mat-cell *matCellDef="let element" class="center">
         <fa-icon [icon]="element.ios?faCheck:faUncheck" size="lg"></fa-icon>
       </td>
