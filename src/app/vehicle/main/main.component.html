@@ -6,7 +6,7 @@
     <span i18n="@@VEHICLES">Véhicules</span>
   </mat-toolbar-row>
 </mat-toolbar>
-<mat-drawer-container autosize>
+<mat-drawer-container fxFlex autosize>
   <mat-drawer #drawer [mode]="mode" [opened]="open">
     <mat-list routerLinkActive="active">
       <a mat-list-item routerLink="euc" [routerLinkActive]="['active']">
@@ -26,7 +26,5 @@
       </a>
     </mat-list>
   </mat-drawer>
-
   <router-outlet></router-outlet>
-
 </mat-drawer-container>

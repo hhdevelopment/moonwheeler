@@ -2,10 +2,10 @@
 <span style="display: none" #coeffFromCm i18n="@@COEFF_FROM_CM">1</span>
 <div class="container-header">
   <mat-form-field>
-    <input matInput [(ngModel)]="eucConfig.filter" (keyup)="applyFilter()" i18n-placeholder="@@FILTER" placeholder="Filtre">
+    <input matInput [(ngModel)]="escooterConfig.filter" (keyup)="applyFilter()" i18n-placeholder="@@FILTER" placeholder="Filtre">
   </mat-form-field>
   <div class="flex-spacer"></div>
-  <app-add-button [claims]="claims" (click)="openEditUnicycleDialog({}, $event.ctrlKey)"></app-add-button>
+  <app-add-button [claims]="claims" (click)="openEditScooterDialog({}, $event.ctrlKey)"></app-add-button>
   <button mat-icon-button [matMenuTriggerFor]="menuColumns">
     <fa-icon [icon]="faColumns" size="lg"></fa-icon>
   </button>
@@ -19,7 +19,7 @@
     </mat-checkbox>&nbsp;&nbsp;<ng-container i18n="@@X_COLUMNS_SELECTED">{{selection.selected.length}} colonnes sélectionnées</ng-container>
   </div>
   <div cdkDropList (cdkDropListDropped)="drop($event)">
-    <div mat-menu-item cdkDrag *ngFor="let column of eucConfig.columns" (click)="$event ? selection.toggle(column) : null">
+    <div mat-menu-item cdkDrag *ngFor="let column of escooterConfig.columns" (click)="$event ? selection.toggle(column) : null">
       <fa-icon cdkDragHandle [icon]="faGripLines" size="lg"></fa-icon>&nbsp;&nbsp;
       <mat-checkbox (click)="$event.stopPropagation()"
                     (change)="$event ? selection.toggle(column) : null"
@@ -37,7 +37,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header="brand"><ng-container i18n="@@BRAND_MODEL">Marque / Modèle</ng-container></th>
       <td mat-cell *matCellDef="let element">
         <ng-container>{{element.brand}}&nbsp;{{element.model}}</ng-container><br>
-        <span *ngIf="claims && claims.allowViewAuthor" class="mat-card-subtitle">
+        <span *ngIf="claims && claims.allowViewAuthor && element?.contributors" class="mat-card-subtitle">
           {{element?.contributors[0].email}}
         </span>
       </td>
@@ -53,6 +53,12 @@
     <ng-container matColumnDef="charging-time">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="chargingTime"><ng-container i18n="@@CHARGING_TIME">Temps de charge</ng-container></th>
       <td mat-cell *matCellDef="let element">{{element.chargingTime || '?'}}&nbsp;h</td>
+    </ng-container>
+
+    <!-- deck-length Column -->
+    <ng-container matColumnDef="deck-length">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="deckLength"><ng-container i18n="@@DECK_LENGTH">Longueur du deck</ng-container></th>
+      <td mat-cell *matCellDef="let element">{{element.deckLength | i18nNumber:coeffFromCm || '?'}}&nbsp;cm</td>
     </ng-container>
 
     <!-- range Column -->
@@ -83,13 +89,13 @@
 
     <!-- ip-rating Column -->
     <ng-container matColumnDef="ip-rating">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="ipRating"><span i18n="@@IP_RATING">Indice de protection</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="ipRating"><ng-container i18n="@@IP_RATING">Indice de protection</ng-container></th>
       <td mat-cell *matCellDef="let element">{{element.ipRating || '?'}}</td>
     </ng-container>
 
     <!-- max-slope Column -->
     <ng-container matColumnDef="max-slope">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="maxSlope"><span i18n="@@MAX_SLOPE">Pente max</span></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="maxSlope"><ng-container i18n="@@MAX_SLOPE">Pente max</ng-container></th>
       <td mat-cell *matCellDef="let element">{{element.maxSlope || '?'}}&nbsp;°</td>
     </ng-container>
 
@@ -97,12 +103,6 @@
     <ng-container matColumnDef="weight">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="weight"><ng-container i18n="@@WEIGHT">Poids</ng-container></th>
       <td mat-cell *matCellDef="let element">{{element.weight  || '?'}}&nbsp;kg</td>
-    </ng-container>
-
-    <!-- gap Column -->
-    <ng-container matColumnDef="gap">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="gap">Gap</th>
-      <td mat-cell *matCellDef="let element">{{element.gap| i18nNumber:coeffFromCm  || '?'}}&nbsp;<ng-container i18n="@@INCHES">cm</ng-container></td>
     </ng-container>
 
     <!-- front-light Column -->
@@ -148,24 +148,25 @@
       </td>
     </ng-container>
 
-    <!-- tire-pressure Column -->
-    <ng-container matColumnDef="tire-pressure">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="tirePressure"><ng-container i18n="@@TIRE_PRESSURE">Pression pneu</ng-container></th>
-      <td mat-cell *matCellDef="let element"><ng-container>{{element.tirePressure || '?'}}&nbsp;bar</ng-container></td>
+    <!-- front-tire-size Column -->
+    <ng-container matColumnDef="tires-size">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="frontTireSize"><ng-container i18n="@@TIRE_SIZE">Taille des roues</ng-container></th>
+      <td mat-cell *matCellDef="let element">{{element.frontTireSize || '?'}}/{{element.rearTireSize || '?'}}&nbsp;"</td>
     </ng-container>
 
-    <!-- tire-size Column -->
-    <ng-container matColumnDef="tire-size">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="tireSize"><ng-container i18n="@@TIRE_SIZE">Taille pneu</ng-container></th>
-      <td mat-cell *matCellDef="let element">{{element.tireSize || '?'}}"</td>
-    </ng-container>
-
-    <!-- tire-type Column -->
-    <ng-container matColumnDef="tire-type">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="tireType"><ng-container i18n="@@TIRE_TYPE">Type pneu</ng-container></th>
+    <!-- front-tire-type Column -->
+    <ng-container matColumnDef="tires-type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="frontTireType"><ng-container i18n="@@TIRE_TYPE">Type des pneus</ng-container></th>
       <td mat-cell *matCellDef="let element">
-        <span i18n="@@TIRE_TYPE_VALUE">{element.tireType, select, Inflatable {Gonflable} Full {Plein} Other {Autre}}</span>
+        <ng-container i18n="@@TIRE_TYPE_VALUE">{element.frontTireType, select, Inflatable {Gonflable} Full {Plein} Other {Autre}}</ng-container>/
+        <ng-container i18n="@@TIRE_TYPE_VALUE">{element.rearTireType, select, Inflatable {Gonflable} Full {Plein} Other {Autre}}</ng-container>
       </td>
+    </ng-container>
+
+    <!-- front-tire-pressure Column -->
+    <ng-container matColumnDef="tires-pressure">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="frontTirePressure"><ng-container i18n="@@TIRE_PRESSURE">Pression des pneus</ng-container></th>
+      <td mat-cell *matCellDef="let element"><ng-container>{{element.frontTirePressure || '?'}}/{{element.rearTirePressure || '?'}}&nbsp;bar</ng-container></td>
     </ng-container>
 
     <!-- turn-signal Column -->
@@ -186,7 +187,7 @@
 
     <!-- ios Column -->
     <ng-container matColumnDef="ios">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="ios"><ng-container>Application Ios</ng-container></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="ios">Application Ios</th>
       <td mat-cell *matCellDef="let element" class="center">
         <fa-icon [icon]="element.ios?faCheck:faUncheck" size="lg"></fa-icon>
       </td>
@@ -196,14 +197,13 @@
     <ng-container matColumnDef="actions" stickyEnd>
       <th mat-header-cell *matHeaderCellDef class="th-toolbar"></th>
       <td mat-cell *matCellDef="let element" class="td-toolbar">
-        <app-row-action-bar *ngIf="element == overflownElement" [item]="element" [claims]="claims" [uid]="uid" [actions]="{delete: true, edit: true}" (action)="actionOnItem($event)"
-                            [@toolbarAppear]></app-row-action-bar>
+        <app-row-action-bar *ngIf="element == overflownElement" [item]="element" [claims]="claims" [uid]="uid" [actions]="{delete: true, edit: true}" (action)="actionOnItem($event)" [@toolbarAppear]></app-row-action-bar>
       </td>
     </ng-container>
 
     <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="eucConfig.displayedColumns.length">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="escooterConfig.displayedColumns.length">
         <div class="element-detail" [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
           <div *ngIf="element && element.thumbnail && url" class="picture" [ngStyle]="{'background-image':' url(' + url + ')'}"></div>
           <div markdown fxFlex>{{element.description || '**To complete**'}}</div>
@@ -218,12 +218,9 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="eucConfig.displayedColumns"></tr>
-    <tr mat-row *matRowDef="let element; columns: eucConfig.displayedColumns;" class="element-row"
-        [class.expanded-row]="expandedElement === element"
-        (mouseenter)="enterItem(element)"
-        (mouseleave)="leaveItem()"
-        (click)="clickItem(element)"></tr>
+    <tr mat-header-row *matHeaderRowDef="escooterConfig.displayedColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: escooterConfig.displayedColumns;" class="element-row" [class.expanded-row]="expandedElement === element"
+        (mouseenter)="enterItem(element)" (mouseleave)="leaveItem()" (click)="clickItem(element)"></tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
   </table>
 </div>

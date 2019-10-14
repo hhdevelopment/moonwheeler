@@ -4,15 +4,15 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireStorage, AngularFireStorageReference} from '@angular/fire/storage';
 import {Observable, of} from 'rxjs';
 import {filter, flatMap} from 'rxjs/operators';
-import {UserService} from '../../../core/service/user/user.service';
+import {UserService} from '../../core/service/user/user.service';
 import {User} from 'firebase';
 
 @Component({
-  selector: 'app-euc-upload-picture',
-  templateUrl: './euc-upload-picture.component.html',
-  styleUrls: ['./euc-upload-picture.component.scss']
+  selector: 'app-upload-picture',
+  templateUrl: './upload-picture.component.html',
+  styleUrls: ['./upload-picture.component.scss']
 })
-export class EucUploadPictureComponent {
+export class UploadPictureComponent {
 
   private _path: string;
 

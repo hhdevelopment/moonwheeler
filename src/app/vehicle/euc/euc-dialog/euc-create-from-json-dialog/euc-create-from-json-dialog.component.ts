@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {faSave} from '@fortawesome/free-solid-svg-icons';
 import {MatDialogRef, MatSnackBar} from '@angular/material';
-import {ElectricUnicycleService} from '../../../../core/service/electric-unicycle/electric-unicycle.service';
+import {ElectricUnicycleService} from '../../../../core/service/electric-vehicle/electric-unicycle.service';
 import {EucSavedSnackBarComponent} from '../../euc-snack-bar/euc-saved-snack-bar.component';
 
 @Component({

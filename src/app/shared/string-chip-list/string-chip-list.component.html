@@ -1,14 +1,14 @@
 <mat-form-field fxFlex>
   <mat-chip-list #chipConnList>
-    <mat-chip *ngFor="let conn of connections"
+    <mat-chip *ngFor="let conn of value"
               [selectable]="true"
               [removable]="true"
               (removed)="remove(conn)">
       {{conn}}
       <fa-icon [icon]="faTimes" matChipRemove></fa-icon>
     </mat-chip>
-    <input i18n-placeholder="@@CONNECTION_TYPES" placeholder="Connexion types" #connInput
-           [formControl]="connCtrl"
+    <input i18n-placeholder="@@CONNECTION_TYPES" placeholder="Connexion types" #valueInput
+           [formControl]="valueCtrl"
            [matAutocomplete]="auto"
            [matChipInputFor]="chipConnList"
            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
@@ -16,6 +16,6 @@
            (matChipInputTokenEnd)="add($event)">
   </mat-chip-list>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    <mat-option [disabled]="connections.includes(conn)" *ngFor="let conn of filteredConnexions | async" [value]="conn">{{conn}}</mat-option>
+    <mat-option [disabled]="value.includes(conn)" *ngFor="let conn of filteredValue | async" [value]="conn">{{conn}}</mat-option>
   </mat-autocomplete>
 </mat-form-field>

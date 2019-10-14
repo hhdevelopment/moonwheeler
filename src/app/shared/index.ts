@@ -10,6 +10,9 @@ import {SafePipe} from './safe/safe.pipe';
 import {AvatarComponent} from './avatar/avatar.component';
 import {AddButtonComponent} from './add-button/add-button.component';
 import {I18nNumberPipe} from './distance/i18m-number.pipe';
+import {StringChipListComponent} from './string-chip-list/string-chip-list.component';
+import {UploadPictureComponent} from './upload-picture/upload-picture.component';
+import {SectionHeaderComponent} from './section-header/section-header.component';
 
 export const SHARED_COMPONENTS: any[] = [
   RedirectComponent,
@@ -23,7 +26,10 @@ export const SHARED_COMPONENTS: any[] = [
   SliderComponent,
   SafePipe,
   I18nNumberPipe,
-  AvatarComponent
+  AvatarComponent,
+  StringChipListComponent,
+  SectionHeaderComponent,
+  UploadPictureComponent
 ];
 
 export {RedirectComponent} from './redirect/redirect.component';
@@ -38,3 +44,6 @@ export {SafePipe} from './safe/safe.pipe';
 export {AvatarComponent} from './avatar/avatar.component';
 export {AddButtonComponent} from './add-button/add-button.component';
 export {I18nNumberPipe} from './distance/i18m-number.pipe';
+export {StringChipListComponent} from './string-chip-list/string-chip-list.component';
+export {UploadPictureComponent} from './upload-picture/upload-picture.component';
+export {SectionHeaderComponent} from './section-header/section-header.component';

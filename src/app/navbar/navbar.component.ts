@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {faAngular, faFacebook, faGithub, faGoogle} from '@fortawesome/free-brands-svg-icons';
 import {AuthService} from '../core/service/auth/auth.service';
-import {faBalanceScale, faCalendarCheck, faCarCrash, faIdBadge, faStore, faUnlock, faUser, faUsersCog} from '@fortawesome/free-solid-svg-icons';
+import {faBalanceScale, faCalendarCheck, faCarCrash, faFileAlt, faGlasses, faIdBadge, faRocket, faStore, faUnlock, faUser, faUsersCog, faVials} from '@fortawesome/free-solid-svg-icons';
 import {UserService} from '../core/service/user/user.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'],
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
 
@@ -25,6 +25,10 @@ export class NavBarComponent implements OnInit {
   faBalanceScale = faBalanceScale;
   faCarCrash = faCarCrash;
   faCalendarCheck = faCalendarCheck;
+  faVials = faVials;
+  faFileAlt = faFileAlt;
+  faVehicle = faRocket;
+  faAccessory = faGlasses;
 
 
   locales = [
