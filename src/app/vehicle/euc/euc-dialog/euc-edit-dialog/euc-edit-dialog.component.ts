@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {faCalendarCheck, faEye, faPencilAlt, faSave, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
-import {ElectricUnicycleService} from '../../../../core/service/electric-unicycle/electric-unicycle.service';
+import {ElectricUnicycleService} from '../../../../core/service/electric-vehicle/electric-unicycle.service';
 import {EucSavedSnackBarComponent} from '../../euc-snack-bar';
 import {ObjectsService} from '../../../../core/service/objects/objects.service';
 
@@ -58,6 +58,7 @@ export class EucEditDialogComponent implements OnInit {
   }
 
   save() {
+    console.log(this.item);
     this.electricUnicycleService.update(this.item).subscribe(() => {
       this.snackBar.openFromComponent(EucSavedSnackBarComponent, {
         duration: 2000,
@@ -76,4 +77,9 @@ export class EucEditDialogComponent implements OnInit {
     this.item.operatingTemperatureTop = $event[1];
   }
 
+  updateConnection($event: string[]) {
+    console.log($event);
+    this.item.connections = $event;
+    console.log(this.item);
+  }
 }

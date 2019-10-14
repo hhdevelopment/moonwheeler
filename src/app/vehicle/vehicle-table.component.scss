@@ -1,8 +1,9 @@
 .container-header {
+  padding-left: 20px;
+  padding-right: 20px;
   display: flex;
 }
 mat-form-field {
-  padding-left: 20px;
   font-size: 14px;
   width: 100%;
 }
@@ -12,6 +13,7 @@ mat-form-field {
 
 .container-table {
   overflow-x: auto;
+  margin: 20px;
 }
 table {
   width: 100%;
@@ -35,6 +37,9 @@ tr.element-row:not(.expanded-row):hover > td {
 .element-detail {
   overflow: hidden;
   display: flex;
+}
+tr.detail-row > td:last-child {
+  padding-right: 0 !important;
 }
 tr.element-row > td:last-child {
   padding-right: 0 !important;

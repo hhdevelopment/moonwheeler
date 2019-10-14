@@ -1,26 +1,26 @@
 import {Component, Inject} from '@angular/core';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
-import {ElectricUnicycleService} from '../../../../core/service/electric-vehicle/electric-unicycle.service';
-import {EucDeletedSnackBarComponent} from '../../euc-snack-bar';
+import {EscooterDeletedSnackBarComponent} from '../../escooter-snack-bar';
+import {ElectricScooterService} from '../../../../core/service/electric-vehicle/electric-scooter.service';
 
 @Component({
-  templateUrl: './euc-confirm-delete-dialog.component.html',
+  templateUrl: './escooter-confirm-delete-dialog.component.html',
   styles: []
 })
-export class EucConfirmDeleteDialogComponent {
+export class EscooterConfirmDeleteDialogComponent {
 
   faTimes = faTimes;
 
-  constructor(public dialogRef: MatDialogRef<EucConfirmDeleteDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<EscooterConfirmDeleteDialogComponent>,
               private snackBar: MatSnackBar,
               @Inject(MAT_DIALOG_DATA) public data: ElectricUnicycleConfirmDeleteData,
-              private service: ElectricUnicycleService) {
+              private service: ElectricScooterService) {
   }
 
   delete() {
     this.service.delete(this.data.item).subscribe(() => {
-      this.snackBar.openFromComponent(EucDeletedSnackBarComponent, {
+      this.snackBar.openFromComponent(EscooterDeletedSnackBarComponent, {
         duration: 2000,
       });
       this.dialogRef.close();

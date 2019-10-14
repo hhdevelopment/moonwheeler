@@ -25,13 +25,13 @@
     </mat-form-field>
   </div>
   <mat-accordion>
-    <mat-expansion-panel>
+    <mat-expansion-panel expanded>
       <mat-expansion-panel-header>
         <mat-panel-title i18n="@@DESCRIPTION">Description</mat-panel-title>
       </mat-expansion-panel-header>
       <div fxLayout="column" fxLayoutGap="10px">
         <div fxLayout="row" fxLayoutGap="10px">
-          <app-euc-upload-picture [path]="item.thumbnail" (pictureUpdate)="item.thumbnail = $event"></app-euc-upload-picture>
+          <app-upload-picture [path]="item.thumbnail" (pictureUpdate)="item.thumbnail = $event"></app-upload-picture>
           <div *ngIf="descriptionEdit; then descriptionEditMode else descriptionPreviewMode">
             <!-- template will replace this div -->
           </div>
@@ -179,7 +179,7 @@
         <mat-panel-title i18n="@@APPLICATIONS">Applications</mat-panel-title>
       </mat-expansion-panel-header>
       <div fxLayout="row" fxLayoutGap="10px">
-        <app-euc-connections-chip-list fxFlex [connections]="item.connections"></app-euc-connections-chip-list>
+        <app-string-chip-list fxFlex [value]="item.connections" (changeValue)="updateConnection($event)"></app-string-chip-list>
         <div fxLayout="column">
           <mat-slide-toggle [(ngModel)]="item.ios" i18n="@@IOS">IOS</mat-slide-toggle>
           <mat-slide-toggle [(ngModel)]="item.android" i18n="@@ANDROID">Android</mat-slide-toggle>

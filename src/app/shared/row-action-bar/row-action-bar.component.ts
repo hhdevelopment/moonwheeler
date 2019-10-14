@@ -29,4 +29,8 @@ export class RowActionBarComponent {
     this.action.emit({item: this.item, action});
   }
 
+  contribuableIsUser(): boolean {
+    return this.item && this.item.contributors && this.item.contributors[0].uid === this.uid;
+  }
+
 }

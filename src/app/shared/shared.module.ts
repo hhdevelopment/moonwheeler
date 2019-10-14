@@ -15,7 +15,8 @@ import {
   MatInputModule,
   MatListModule,
   MatMenuModule,
-  MatPaginatorModule, MatProgressSpinnerModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
@@ -30,14 +31,13 @@ import {
   MatTreeModule
 } from '@angular/material';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {StoreModule, USER_ID} from '@hhangular/store';
+import {StoreModule} from '@hhangular/store';
 import {MarkdownModule} from 'ngx-markdown';
 import {HttpClient} from '@angular/common/http';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {LayoutModule} from '@angular/cdk/layout';
 import {SHARED_COMPONENTS} from './index';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {UserService} from '../core/service/user/user.service';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';

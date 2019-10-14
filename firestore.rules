@@ -1,7 +1,14 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /electricUnicycles/{electricUnicycles} {
+    match /electricUnicycles/{electricUnicycle} {
+      allow list: 	if true;
+      allow read: 	if true;
+    	allow write: 	if request.auth.token.allowCreate == true;
+    	allow update: if request.auth.token.allowUpdate == true || resource.data.createdById == request.auth.uid;
+    	allow delete: if request.auth.token.allowDelete == true || resource.data.createdById == request.auth.uid;
+	  }
+    match /electricScooters/{electricScooter} {
       allow list: 	if true;
       allow read: 	if true;
     	allow write: 	if request.auth.token.allowCreate == true;

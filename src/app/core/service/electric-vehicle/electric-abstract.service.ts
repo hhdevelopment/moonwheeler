@@ -6,38 +6,38 @@ import {UserService} from '../user/user.service';
 import {flatMap} from 'rxjs/operators';
 import {User} from 'firebase';
 
-const PATH = 'electricUnicycles';
-
 @Injectable({
   providedIn: 'root'
 })
-export class ElectricUnicycleService {
+export abstract class ElectricAbstractService<T extends ElectricVehicle> {
+
+  abstract getPath(): string;
 
   constructor(
     private userService: UserService,
     private afs: AngularFirestore) {
   }
 
-  list(queryFn?: (ref: CollectionReference) => Query): Observable<ElectricUnicycle[]> {
-    return this.afs.collection<ElectricUnicycle>(PATH, queryFn).valueChanges();
+  list(queryFn?: (ref: CollectionReference) => Query): Observable<T[]> {
+    return this.afs.collection<T>(this.getPath(), queryFn).valueChanges();
   }
 
-  create(euc: Partial<ElectricUnicycle>): Observable<void> {
+  create(euc: Partial<T>): Observable<void> {
     const id: string = this.afs.createId();
     return this.save(euc, id);
   }
 
-  update(euc: Partial<ElectricUnicycle>): Observable<void> {
+  update(euc: Partial<T>): Observable<void> {
     return this.save(euc, euc.id, euc.createdAt);
   }
 
-  private save(euc: Partial<ElectricUnicycle>, id: string, createdAt?: number): Observable<void> {
+  private save(euc: Partial<T>, id: string, createdAt?: number): Observable<void> {
     const at: number = new Date().getTime();
     return this.userService.getUser().pipe(
       flatMap((user: User) => {
         const uid: string = user.uid;
         const email: string = user.email || user.providerData[0].email;
-        const payload: Partial<ElectricUnicycle> = {
+        const payload: Partial<T> = {
           id,
           ...euc,
           createdAt: createdAt || at,
@@ -51,12 +51,12 @@ export class ElectricUnicycleService {
           payload.createdById = uid;
         }
         payload.contributors.push({email, uid, at});
-        return fromPromise(this.afs.collection<ElectricUnicycle>(PATH).doc(id).set(payload));
+        return fromPromise(this.afs.collection<T>(this.getPath()).doc(id).set(payload));
       })
     );
   }
 
-  delete(euc: Partial<ElectricUnicycle>): Observable<void> {
-    return fromPromise(this.afs.collection<ElectricUnicycle>(PATH).doc(euc.id).delete());
+  delete(euc: Partial<T>): Observable<void> {
+    return fromPromise(this.afs.collection<T>(this.getPath()).doc(euc.id).delete());
   }
 }
