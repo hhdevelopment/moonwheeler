@@ -1,21 +1,25 @@
 import {OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort, MatTableDataSource, PageEvent, Sort, SortDirection} from '@angular/material';
+import {MatDialog, MatDialogRef, MatPaginator, MatSnackBar, MatSort, MatTableDataSource, PageEvent, Sort, SortDirection} from '@angular/material';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {SelectionChange, SelectionModel} from '@angular/cdk/collections';
 import {AngularFireStorage, AngularFireStorageReference} from '@angular/fire/storage';
 import {faCheckSquare, faSquare} from '@fortawesome/free-regular-svg-icons';
 import {faColumns, faGripLines, faPencilAlt, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {UserService} from '../core/service/user/user.service';
-import {EucEditDialogComponent} from './euc/euc-dialog/euc-edit-dialog/euc-edit-dialog.component';
-import {EucCreateFromJsonDialogComponent} from './euc/euc-dialog/euc-create-from-json-dialog/euc-create-from-json-dialog.component';
-import {EucConfirmDeleteDialogComponent} from './euc/euc-dialog/euc-confirm-delete-dialog/euc-confirm-delete-dialog.component';
 import {ElectricAbstractService} from '../core/service/electric-vehicle/electric-abstract.service';
+import {ConfirmDeleteDialogComponent, CreateFromJsonDialogComponent} from './dialog';
+import {catchError, filter, flatMap, mergeMap} from 'rxjs/operators';
+import {DeletedSnackBarComponent, SavedSnackBarComponent} from './snack-bar';
+import {empty, Observable, of} from 'rxjs';
+import {EditDialogComponent} from './dialog/edit-dialog.component';
+import {tryCatch} from 'rxjs/internal-compatibility';
 
 export abstract class VehicleTableComponent<T extends ElectricVehicle> implements OnInit {
 
-  constructor(
+  protected constructor(
+    protected snackBar: MatSnackBar,
     private afStorage: AngularFireStorage,
-    private electricVehicleService: ElectricAbstractService<T>,
+    protected electricVehicleService: ElectricAbstractService<T>,
     private userService: UserService,
     protected dialog: MatDialog
   ) {
@@ -42,6 +46,8 @@ export abstract class VehicleTableComponent<T extends ElectricVehicle> implement
   sort: MatSort;
 
   abstract getConfig();
+
+  abstract openEditSpecificDialog(item: Partial<T>): MatDialogRef<EditDialogComponent<T>, Partial<T>>;
 
   ngOnInit() {
     this.userService.getClaims().subscribe((claims: Claims) => {
@@ -140,4 +146,58 @@ export abstract class VehicleTableComponent<T extends ElectricVehicle> implement
     return this.expandedElement && this.expandedElement.contributors && this.expandedElement.contributors[0].uid === this.uid;
   }
 
+  actionOnItem(event: { item: T, action: string }) {
+    if ('edit' === event.action) {
+      this.openEditVehicleDialog(event.item, false);
+    } else if ('delete' === event.action) {
+      this.dialog.open<ConfirmDeleteDialogComponent<T>, T, boolean>(ConfirmDeleteDialogComponent, {width: '400px', data: event.item}).afterClosed().pipe(
+        filter((res: boolean) => res),
+        flatMap((res: boolean) => {
+          return this.deletePicture(event.item.thumbnail);
+        }),
+        flatMap(() => {
+          console.log(event.item);
+          return this.electricVehicleService.delete(event.item);
+        })
+      ).subscribe(() => {
+        this.snackBar.openFromComponent(DeletedSnackBarComponent, {duration: 2000});
+      });
+    }
+  }
+
+  private deletePicture(path: string): Observable<any> {
+    if (!!path) {
+      const ref: AngularFireStorageReference = this.afStorage.ref(path);
+      try {
+        return ref.delete().pipe(
+          catchError(err => of(null))
+        );
+      } catch (e) {
+        return of(null);
+      }
+    } else {
+      return of(null);
+    }
+  }
+
+  openEditVehicleDialog(item: Partial<T>, json: boolean = false) {
+    let afterClosed: Observable<Partial<T>>;
+    if (json) {
+      afterClosed = this.dialog.open<CreateFromJsonDialogComponent<T>, null, Partial<T>>(CreateFromJsonDialogComponent, {width: '90%'}).afterClosed();
+    } else {
+      afterClosed = this.openEditSpecificDialog(item).afterClosed();
+    }
+    afterClosed.pipe(
+      filter((newItem: Partial<T>) => !!newItem),
+      flatMap((newItem: Partial<T>) => {
+        if (!!newItem.id) {
+          return this.electricVehicleService.update(newItem);
+        } else {
+          return this.electricVehicleService.create(newItem);
+        }
+      })
+    ).subscribe(() => {
+      this.snackBar.openFromComponent(SavedSnackBarComponent, {duration: 2000});
+    });
+  }
 }

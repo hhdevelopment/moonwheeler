@@ -1,26 +1,17 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {faCalendarCheck, faEye, faPencilAlt, faSave, faTimes} from '@fortawesome/free-solid-svg-icons';
-import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
-import {ElectricUnicycleService} from '../../../../core/service/electric-vehicle/electric-unicycle.service';
-import {EucSavedSnackBarComponent} from '../../euc-snack-bar';
-import {ObjectsService} from '../../../../core/service/objects/objects.service';
+import {OnInit} from '@angular/core';
+import {faCalendarCheck, faSave, faTimes} from '@fortawesome/free-solid-svg-icons';
+import {MatDialogRef, MatSnackBar} from '@angular/material';
+import {ObjectsService} from '../../core/service/objects/objects.service';
 
-@Component({
-  selector: 'app-euc-edit-dialog',
-  templateUrl: './euc-edit-dialog.component.html',
-  styleUrls: ['./euc-edit-dialog.component.scss']
-})
-export class EucEditDialogComponent implements OnInit {
+export class EditDialogComponent<T extends ElectricVehicle> implements OnInit {
 
   faSave = faSave;
-  faEye = faEye;
-  faPencilAlt = faPencilAlt;
   faTimes = faTimes;
   faCalendarCheck = faCalendarCheck;
 
   descriptionEdit = true;
   currentYear: number;
-  item: Partial<ElectricUnicycle>;
+  item: Partial<T>;
 
 
   brands: string[];
@@ -30,17 +21,15 @@ export class EucEditDialogComponent implements OnInit {
   years: number[];
   weights: number[] = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35];
   payloads: number[] = [40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180];
-  tireSizes: number[] = [14, 15, 16, 17, 18, 19, 20];
 
-  constructor(public dialogRef: MatDialogRef<EucEditDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<EditDialogComponent<T>>,
               private snackBar: MatSnackBar,
-              private electricUnicycleService: ElectricUnicycleService,
               private objectsService: ObjectsService,
-              @Inject(MAT_DIALOG_DATA) private data: ElectricUnicycleEditData) {
+              private data: Partial<T>) {
   }
 
   ngOnInit(): void {
-    this.item = {...this.data.item};
+    this.item = {...this.data};
     this.objectsService.listIpRatings().subscribe((ipRatings: string[]) => {
       this.ipRatings = ipRatings.sort();
     });
@@ -58,13 +47,7 @@ export class EucEditDialogComponent implements OnInit {
   }
 
   save() {
-    console.log(this.item);
-    this.electricUnicycleService.update(this.item).subscribe(() => {
-      this.snackBar.openFromComponent(EucSavedSnackBarComponent, {
-        duration: 2000,
-      });
-      this.dialogRef.close();
-    });
+    this.dialogRef.close(this.item);
   }
 
   updateSpeeds($event: number | number[]) {
@@ -78,8 +61,6 @@ export class EucEditDialogComponent implements OnInit {
   }
 
   updateConnection($event: string[]) {
-    console.log($event);
     this.item.connections = $event;
-    console.log(this.item);
   }
 }

@@ -1,0 +1,213 @@
+<div mat-dialog-title>
+  <ng-container i18n="@@EDIT_OR_CREATE_EUC">Éditer ou créer une monoroue</ng-container>
+  <button tabindex="-1" class="float-right" mat-icon-button mat-dialog-close><fa-icon [icon]="faTimes"></fa-icon></button>
+</div>
+<div mat-dialog-content fxLayout="column">
+  <mat-label i18n="@@REFERENCE">Référence</mat-label>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <mat-form-field fxFlex>
+      <mat-label i18n="@@BRAND">Marque</mat-label>
+      <mat-select [(ngModel)]="item.brand">
+        <mat-option *ngFor="let brand of brands" [value]="brand">{{brand}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input [(ngModel)]="item.model" i18n-placeholder="@@MODEL" matInput placeholder="Modèle">
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <mat-label i18n="@@RELEASE_IN_YEAR">Année de sortie</mat-label>
+      <mat-select [(ngModel)]="item.releasedIn">
+        <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+      </mat-select>
+      <button tabindex="-1" mat-button matSuffix mat-icon-button (click)="item.releasedIn=currentYear">
+        <fa-icon [icon]="faCalendarCheck"></fa-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <mat-accordion>
+    <mat-expansion-panel expanded>
+      <mat-expansion-panel-header>
+        <mat-panel-title i18n="@@DESCRIPTION">Description</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout="row" fxLayoutGap="10px">
+          <app-upload-picture [path]="item.thumbnail" (pictureUpdate)="item.thumbnail = $event"></app-upload-picture>
+          <div *ngIf="descriptionEdit; then descriptionEditMode else descriptionPreviewMode">
+            <!-- template will replace this div -->
+          </div>
+        </div>
+        <mat-slide-toggle tabindex="-1" (toggleChange)="descriptionEdit = !descriptionEdit" i18n="@@PREVIEW_MARKDOWN">Prévisualisation du markdown</mat-slide-toggle>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title i18n="@@MAIN_FEATURES">Caractéristiques principales</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-form-field fxFlex>
+          <mat-label i18n="@@WEIGHT">Poids de l'engin</mat-label>
+          <mat-select [(ngModel)]="item.weight">
+            <mat-option *ngFor="let weight of weights" [value]="weight">{{weight}}</mat-option>
+          </mat-select>
+          <span matSuffix>Kg</span>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-label i18n="@@PAYLOAD">Poids max du conducteur</mat-label>
+          <mat-select [(ngModel)]="item.payload">
+            <mat-option *ngFor="let payload of payloads" [value]="payload">{{payload}}</mat-option>
+          </mat-select>
+          <span matSuffix>Kg</span>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-label i18n="@@IP_RATING">Indice de protection</mat-label>
+          <mat-select [(ngModel)]="item.ipRating">
+            <mat-option *ngFor="let ipRating of ipRatings" [value]="ipRating">{{ipRating}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input type="number" [(ngModel)]="item.gap" i18n-placeholder="@@DISTANCE_BETWEEN_FOOTBOARD_AND_GROUND" matInput placeholder="Distance pédale/sol">
+          <span matSuffix>Cm</span>
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title i18n="@@PERFORMANCES">Performances</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div fxLayout="row" fxLayoutGap="10px" style="height: 40px">
+        <div fxLayout="column" fxFlex>
+          <app-slider fxFlex thumbLabel [value]="[item.factorySpeed, item.maxSpeed]" min="0" max="80" step="1" (valueChange)="updateSpeeds($event)"></app-slider>
+          <br>
+          <mat-label class="mat-small">
+            <ng-container i18n="@@SPEEDS">Vitesse d'usine/max</ng-container>&nbsp;({{item.factorySpeed || '?'}}~{{item.maxSpeed || '?'}}&nbsp;Km/h)<br>
+          </mat-label>
+        </div>
+        <div fxLayout="column" fxFlex>
+          <mat-slider fxFlex thumbLabel [(ngModel)]="item.distanceMax" min="0" max="180" step="1"></mat-slider>
+          <br>
+          <mat-label class="mat-small" i18n="@@DISTANCE_MAX">
+            <ng-container>Distance max</ng-container>&nbsp;({{item.distanceMax || '?'}}&nbsp;Km)
+          </mat-label>
+        </div>
+        <div fxLayout="column" fxFlex>
+          <mat-slider fxFlex thumbLabel [(ngModel)]="item.maxSlope" min="0" max="60" step="1"></mat-slider>
+          <br>
+          <mat-label class="mat-small" i18n="@@MAX_SLOPE">
+            <ng-container>Pente max</ng-container>&nbsp;({{item.maxSlope || '?'}}&nbsp;°)
+          </mat-label>
+        </div>
+      </div>
+      <br>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title i18n="@@TIRE_CHARACTERISTICS">Caractéristiques de la roue</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-form-field fxFlex>
+          <mat-label i18n="@@TIRE_TYPE">Taille de la roue</mat-label>
+          <mat-select [(ngModel)]="item.tireSize">
+            <mat-option *ngFor="let tireSize of tireSizes" [value]="tireSize">{{tireSize}}</mat-option>
+          </mat-select>&nbsp;
+          <span matSuffix i18n="@@INCHES">Pouces</span>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-label i18n="@@TIRE_TYPE">Type de pneu</mat-label>
+          <mat-select [(ngModel)]="item.tireType">
+            <mat-option *ngFor="let tireType of tireTypes" [value]="tireType"><ng-container i18n="@@TIRE_TYPE_VALUE">{tireType, select, Inflatable {Gonflable} Full {Plein} Other {Autre}}</ng-container></mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input [disabled]="item.tireType !== 'Inflatable'" type="number" [(ngModel)]="item.tirePressure" i18n-placeholder="@@TIRE_PRESSURE" matInput placeholder="Pression du pneu">
+          <span matSuffix>&nbsp;Bar</span>
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title i18n="@@SECURITY">Sécurité</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-slide-toggle [(ngModel)]="item.frontLight" i18n="@@FRONT_LIGHT">Feu avant</mat-slide-toggle>
+        <div class="flex-spacer"></div>
+        <mat-slide-toggle [(ngModel)]="item.rearLight" i18n="@@REAR_LIGHT">Feu arrière</mat-slide-toggle>
+        <div class="flex-spacer"></div>
+        <mat-slide-toggle [(ngModel)]="item.turnSignal" i18n="@@TURN_SIGNAL">Clignotants</mat-slide-toggle>
+        <div class="flex-spacer"></div>
+        <mat-slide-toggle [(ngModel)]="item.horn" i18n="@@HORN">Avertisseur sonore</mat-slide-toggle>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title i18n="@@ENGINE_AND_BATTERY_CHARACTERISTICS">Caractéristiques du moteur et de la batterie</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div fxLayout="row wrap" fxLayoutGap="2%">
+        <mat-form-field fxFlex="48%">
+          <input type="number" [(ngModel)]="item.powerRating" i18n-placeholder="@@POWER_RATING" matInput placeholder="Puissance moteur">
+          <span matSuffix>Watt</span>
+        </mat-form-field>
+        <div fxLayout="column" fxFlex="48%" style="height: 50px">
+          <mat-label class="mat-small" style="padding-left: 10px">
+            <ng-container i18n="@@OPERATING_TEMPERATURE_RATE">Plage de fonctionnement</ng-container>({{item.operatingTemperatureLow || '?'}}~{{item.operatingTemperatureTop || '?'}}`)
+          </mat-label>
+          <app-slider thumbLabel [value]="[item.operatingTemperatureLow, item.operatingTemperatureTop]" min="-40" max="60" step="1" (valueChange)="updateOperatingTemperatures($event)"></app-slider>
+        </div>
+        <mat-form-field  fxFlex="32%">
+          <mat-label i18n="@@BATTERY_TYPE">Type de batterie</mat-label>
+          <mat-select [(ngModel)]="item.batteryType">
+            <mat-option *ngFor="let batteryType of batteryTypes" [value]="batteryType">{{batteryType}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="32%">
+          <input type="number" [(ngModel)]="item.batteryCapacity" i18n-placeholder="@@BATTERY_CAPACITY" matInput placeholder="Capacité de la batterie">
+          <span matSuffix>Watt</span>
+        </mat-form-field>
+        <mat-form-field fxFlex="32%">
+          <input type="number" [(ngModel)]="item.chargingTime" i18n-placeholder="@@CHARGING_TIME" matInput placeholder="Temps de chargement">
+          <span matSuffix i18n="@@HOURS">Heures</span>
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title i18n="@@APPLICATIONS">Applications</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <app-string-chip-list fxFlex [value]="item.connections" (changeValue)="updateConnection($event)"></app-string-chip-list>
+        <div fxLayout="column">
+          <mat-slide-toggle [(ngModel)]="item.ios" i18n="@@IOS">IOS</mat-slide-toggle>
+          <mat-slide-toggle [(ngModel)]="item.android" i18n="@@ANDROID">Android</mat-slide-toggle>
+        </div>
+        <div class="flex-w20"></div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <br>
+</div>
+
+<div mat-dialog-actions>
+  <span class="flex-spacer"></span>
+  <button mat-dialog-close mat-button color="warn" i18n="@@CANCEL">Annuler</button>
+  <button mat-button color="primary" (click)="save()">
+    <fa-icon [icon]="faSave" size="lg"></fa-icon>&nbsp;&nbsp;&nbsp;
+    <ng-container i18n="@@SAVE">Sauvegarder</ng-container>
+  </button>
+</div>
+
+
+<ng-template #descriptionEditMode>
+  <mat-form-field fxFlex>
+    <textarea matInput rows="8" i18n-placeholder="@@DESCRIPTION_MARKDOWN" placeholder="Description (markdown)" [(ngModel)]="item.description"></textarea>
+  </mat-form-field>
+</ng-template>
+
+<ng-template #descriptionPreviewMode>
+  <markdown fxFlex [data]="item.description"></markdown>
+</ng-template>
+

@@ -56,7 +56,7 @@ export abstract class ElectricAbstractService<T extends ElectricVehicle> {
     );
   }
 
-  delete(euc: Partial<T>): Observable<void> {
-    return fromPromise(this.afs.collection<T>(this.getPath()).doc(euc.id).delete());
+  delete(ev: Partial<T>): Observable<void> {
+    return fromPromise(this.afs.collection<T>(this.getPath()).doc(ev.id).delete());
   }
 }
