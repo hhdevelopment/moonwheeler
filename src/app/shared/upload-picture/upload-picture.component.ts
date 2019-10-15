@@ -3,7 +3,7 @@ import {faFileDownload} from '@fortawesome/free-solid-svg-icons';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireStorage, AngularFireStorageReference} from '@angular/fire/storage';
 import {Observable, of} from 'rxjs';
-import {filter, flatMap} from 'rxjs/operators';
+import {catchError, filter, flatMap} from 'rxjs/operators';
 import {UserService} from '../../core/service/user/user.service';
 import {User} from 'firebase';
 
@@ -61,7 +61,7 @@ export class UploadPictureComponent {
         flatMap(p => {
           return this.deletePreviousPicture();
         })
-      ).toPromise().then(() => {
+      ).subscribe(() => {
         this.path = path;
         this.pictureUpdate.emit(path);
       });
@@ -86,7 +86,9 @@ export class UploadPictureComponent {
   private deletePreviousPicture(): Observable<any> {
     if (!!this.path) {
       const ref: AngularFireStorageReference = this.afStorage.ref(this.path);
-      return ref.delete();
+      return ref.delete().pipe(
+        catchError(err => of(null))
+      );
     } else {
       return of(null);
     }

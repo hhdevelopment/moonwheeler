@@ -1,13 +1,14 @@
 import {Component} from '@angular/core';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {toolbarAppear} from '../../../shared/animations';
 import {LocalStored} from '@hhangular/store';
 import {UserService} from '../../../core/service/user/user.service';
-import {EucConfirmDeleteDialogComponent, EucCreateFromJsonDialogComponent, EucEditDialogComponent} from '../../euc/euc-dialog';
 import {VehicleTableComponent} from '../../vehicle-table.component';
 import {ElectricScooterService} from '../../../core/service/electric-vehicle/electric-scooter.service';
+import {EscooterEditDialogComponent} from '../escooter-edit-dialog/escooter-edit-dialog.component';
+import {EditDialogComponent} from '../../dialog/edit-dialog.component';
 
 @Component({
   selector: 'app-escooter-table',
@@ -22,14 +23,15 @@ import {ElectricScooterService} from '../../../core/service/electric-vehicle/ele
     toolbarAppear
   ],
 })
-export class EscooterTableComponent extends VehicleTableComponent<ElectricScooter> {
+export class EscooterTableComponent<T extends ElectricScooter> extends VehicleTableComponent<ElectricScooter> {
   constructor(
+    snackBar: MatSnackBar,
     electricScooterService: ElectricScooterService,
     afStorage: AngularFireStorage,
     userService: UserService,
     dialog: MatDialog,
   ) {
-    super(afStorage, electricScooterService, userService, dialog);
+    super(snackBar, afStorage, electricScooterService, userService, dialog);
   }
 
   @LocalStored(4)
@@ -49,27 +51,7 @@ export class EscooterTableComponent extends VehicleTableComponent<ElectricScoote
     return this.escooterConfig;
   }
 
-  actionOnItem(event: { item: any, action: string }) {
-    if ('edit' === event.action) {
-      this.openEditScooterDialog(event.item);
-    } else if ('delete' === event.action) {
-      this.dialog.open<EucConfirmDeleteDialogComponent, ElectricUnicycleConfirmDeleteData>(EucConfirmDeleteDialogComponent, {
-        width: '400px',
-        data: {item: event.item}
-      });
-    }
-  }
-
-  openEditScooterDialog(item: Partial<ElectricScooter>, json: boolean = false) {
-    if (json) {
-      this.dialog.open<EucCreateFromJsonDialogComponent>(EucCreateFromJsonDialogComponent, {
-        width: '90%'
-      });
-    } else {
-      this.dialog.open<EucEditDialogComponent, ElectricUnicycleEditData>(EucEditDialogComponent, {
-        width: '90%',
-        data: {item}
-      });
-    }
+  openEditSpecificDialog(item: Partial<ElectricScooter>): MatDialogRef<EditDialogComponent<ElectricScooter>, Partial<ElectricScooter>> {
+    return this.dialog.open<EscooterEditDialogComponent, Partial<ElectricScooter>, Partial<ElectricScooter>>(EscooterEditDialogComponent, {width: '90%', data: item});
   }
 }

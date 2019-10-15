@@ -1,19 +1,14 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort, MatTableDataSource, PageEvent, Sort, SortDirection} from '@angular/material';
+import {Component} from '@angular/core';
+import {MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {SelectionChange, SelectionModel} from '@angular/cdk/collections';
-import {AngularFireStorage, AngularFireStorageReference} from '@angular/fire/storage';
+import {AngularFireStorage} from '@angular/fire/storage';
 import {toolbarAppear} from '../../../shared/animations';
-import {faCheckSquare, faSquare} from '@fortawesome/free-regular-svg-icons';
-import {faColumns, faGripLines, faPencilAlt, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {LocalStored} from '@hhangular/store';
 import {UserService} from '../../../core/service/user/user.service';
-import {EucEditDialogComponent} from '../euc-dialog/euc-edit-dialog/euc-edit-dialog.component';
-import {EucCreateFromJsonDialogComponent} from '../euc-dialog/euc-create-from-json-dialog/euc-create-from-json-dialog.component';
-import {EucConfirmDeleteDialogComponent} from '../euc-dialog/euc-confirm-delete-dialog/euc-confirm-delete-dialog.component';
 import {ElectricUnicycleService} from '../../../core/service/electric-vehicle/electric-unicycle.service';
 import {VehicleTableComponent} from '../../vehicle-table.component';
+import {EucEditDialogComponent} from '../euc-edit-dialog/euc-edit-dialog.component';
+import {EditDialogComponent} from '../../dialog/edit-dialog.component';
 
 @Component({
   selector: 'app-euc-table',
@@ -31,12 +26,13 @@ import {VehicleTableComponent} from '../../vehicle-table.component';
 export class EucTableComponent extends VehicleTableComponent<ElectricUnicycle> {
 
   constructor(
+    snackBar: MatSnackBar,
     electricUnicycleService: ElectricUnicycleService,
     afStorage: AngularFireStorage,
     userService: UserService,
     dialog: MatDialog,
   ) {
-    super(afStorage, electricUnicycleService, userService, dialog);
+    super(snackBar, afStorage, electricUnicycleService, userService, dialog);
   }
 
   @LocalStored(1)
@@ -56,27 +52,7 @@ export class EucTableComponent extends VehicleTableComponent<ElectricUnicycle> {
     return this.eucConfig;
   }
 
-  actionOnItem(event: { item: any, action: string }) {
-    if ('edit' === event.action) {
-      this.openEditUnicycleDialog(event.item);
-    } else if ('delete' === event.action) {
-      this.dialog.open<EucConfirmDeleteDialogComponent, ElectricUnicycleConfirmDeleteData>(EucConfirmDeleteDialogComponent, {
-        width: '400px',
-        data: {item: event.item}
-      });
-    }
-  }
-
-  openEditUnicycleDialog(item: Partial<ElectricUnicycle>, json: boolean = false) {
-    if (json) {
-      this.dialog.open<EucCreateFromJsonDialogComponent>(EucCreateFromJsonDialogComponent, {
-        width: '90%'
-      });
-    } else {
-      this.dialog.open<EucEditDialogComponent, ElectricUnicycleEditData>(EucEditDialogComponent, {
-        width: '90%',
-        data: {item}
-      });
-    }
+  openEditSpecificDialog(item: Partial<ElectricUnicycle>): MatDialogRef<EditDialogComponent<ElectricUnicycle>, Partial<ElectricUnicycle>> {
+    return this.dialog.open<EucEditDialogComponent, Partial<ElectricUnicycle>, Partial<ElectricUnicycle>>(EucEditDialogComponent, {width: '90%', data: item});
   }
 }

@@ -1,5 +1,5 @@
 <div mat-dialog-title>
-  <span i18n="@@EDIT_OR_CREATE_EUC">Éditer ou créer une monoroue</span>
+  <ng-container i18n="@@EDIT_OR_CREATE_EUC">Éditer ou créer une trottinette</ng-container>
   <button tabindex="-1" class="float-right" mat-icon-button mat-dialog-close><fa-icon [icon]="faTimes"></fa-icon></button>
 </div>
 <div mat-dialog-content fxLayout="column">
@@ -66,7 +66,7 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input type="number" [(ngModel)]="item.gap" i18n-placeholder="@@DISTANCE_BETWEEN_FOOTBOARD_AND_GROUND" matInput placeholder="Distance pédale/sol">
+          <input type="number" [(ngModel)]="item.deckLength" i18n-placeholder="@@DECK_LENGTH" matInput placeholder="Longueur du deck">
           <span matSuffix>Cm</span>
         </mat-form-field>
       </div>
@@ -81,21 +81,21 @@
           <app-slider fxFlex thumbLabel [value]="[item.factorySpeed, item.maxSpeed]" min="0" max="80" step="1" (valueChange)="updateSpeeds($event)"></app-slider>
           <br>
           <mat-label class="mat-small">
-            <span i18n="@@SPEEDS">Vitesse d'usine/max</span>&nbsp;({{item.factorySpeed || '?'}}~{{item.maxSpeed || '?'}} km/h)<br>
+            <ng-container i18n="@@SPEEDS">Vitesse d'usine/max</ng-container>&nbsp;({{item.factorySpeed || '?'}}~{{item.maxSpeed || '?'}}&nbsp;Km/h)<br>
           </mat-label>
         </div>
         <div fxLayout="column" fxFlex>
           <mat-slider fxFlex thumbLabel [(ngModel)]="item.distanceMax" min="0" max="180" step="1"></mat-slider>
           <br>
           <mat-label class="mat-small" i18n="@@DISTANCE_MAX">
-            <span>Distance max</span>&nbsp;({{item.distanceMax || '?'}}km)
+            <ng-container>Distance max</ng-container>&nbsp;({{item.distanceMax || '?'}}&nbsp;Km)
           </mat-label>
         </div>
         <div fxLayout="column" fxFlex>
           <mat-slider fxFlex thumbLabel [(ngModel)]="item.maxSlope" min="0" max="60" step="1"></mat-slider>
           <br>
           <mat-label class="mat-small" i18n="@@MAX_SLOPE">
-            <span>Pente max</span>&nbsp;({{item.maxSlope || '?'}}°)
+            <ng-container>Pente max</ng-container>&nbsp;({{item.maxSlope || '?'}}&nbsp;°)
           </mat-label>
         </div>
       </div>
@@ -104,25 +104,44 @@
 
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@TIRE_CHARACTERISTICS">Caractéristiques du pneu</mat-panel-title>
+        <mat-panel-title i18n="@@TIRES_CHARACTERISTICS">Caractéristiques des pneus</mat-panel-title>
       </mat-expansion-panel-header>
       <div fxLayout="row" fxLayoutGap="10px">
         <mat-form-field fxFlex>
-          <mat-label i18n="@@TIRE_TYPE">Type de pneu</mat-label>
-          <mat-select [(ngModel)]="item.tireSize">
+          <mat-label i18n="@@TIRE_TYPE">Taille du pneu avant</mat-label>
+          <mat-select [(ngModel)]="item.frontTireSize">
             <mat-option *ngFor="let tireSize of tireSizes" [value]="tireSize">{{tireSize}}</mat-option>
-          </mat-select>
-          <span matSuffix>Pouces</span>
+          </mat-select>&nbsp;
+          <span matSuffix i18n="@@INCHES">Pouces</span>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <mat-label i18n="@@TIRE_TYPE">Type de pneu</mat-label>
-          <mat-select [(ngModel)]="item.tireType">
-            <mat-option *ngFor="let tireType of tireTypes" [value]="tireType"><span i18n="@@TIRE_TYPE_VALUE">{tireType, select, Inflatable {Gonflable} Full {Plein} Other {Autre}}</span></mat-option>
+          <mat-label i18n="@@TIRE_TYPE">Type du pneu avant</mat-label>
+          <mat-select [(ngModel)]="item.frontTireType">
+            <mat-option *ngFor="let tireType of tireTypes" [value]="tireType"><ng-container i18n="@@TIRE_TYPE_VALUE">{tireType, select, Inflatable {Gonflable} Full {Plein} Other {Autre}}</ng-container></mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input [disabled]="item.tireType !== 'Inflatable'" type="number" [(ngModel)]="item.tirePressure" i18n-placeholder="@@TIRE_PRESSURE" matInput placeholder="Pression du pneu">
-          <span matSuffix>Bar</span>
+          <input [disabled]="item.frontTireType !== 'Inflatable'" type="number" [(ngModel)]="item.frontTirePressure" i18n-placeholder="@@TIRE_PRESSURE" matInput placeholder="Pression du pneu avant">
+          <span matSuffix>&nbsp;Bar</span>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-form-field fxFlex>
+          <mat-label i18n="@@TIRE_TYPE">Taille du pneu arrière</mat-label>
+          <mat-select [(ngModel)]="item.rearTireSize">
+            <mat-option *ngFor="let tireSize of tireSizes" [value]="tireSize">{{tireSize}}</mat-option>
+          </mat-select>&nbsp;
+          <span matSuffix i18n="@@INCHES">Pouces</span>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-label i18n="@@TIRE_TYPE">Type du pneu arrière</mat-label>
+          <mat-select [(ngModel)]="item.rearTireType">
+            <mat-option *ngFor="let tireType of tireTypes" [value]="tireType"><ng-container i18n="@@TIRE_TYPE_VALUE">{tireType, select, Inflatable {Gonflable} Full {Plein} Other {Autre}}</ng-container></mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input [disabled]="item.rearTireType !== 'Inflatable'" type="number" [(ngModel)]="item.rearTirePressure" i18n-placeholder="@@TIRE_PRESSURE" matInput placeholder="Pression du pneu arrière">
+          <span matSuffix>&nbsp;Bar</span>
         </mat-form-field>
       </div>
     </mat-expansion-panel>
@@ -153,7 +172,7 @@
         </mat-form-field>
         <div fxLayout="column" fxFlex="48%" style="height: 50px">
           <mat-label class="mat-small" style="padding-left: 10px">
-            <span i18n="@@OPERATING_TEMPERATURE_RATE">Plage de fonctionnement</span>({{item.operatingTemperatureLow || '?'}}~{{item.operatingTemperatureTop || '?'}}`)
+            <ng-container i18n="@@OPERATING_TEMPERATURE_RATE">Plage de fonctionnement</ng-container>({{item.operatingTemperatureLow || '?'}}~{{item.operatingTemperatureTop || '?'}}`)
           </mat-label>
           <app-slider thumbLabel [value]="[item.operatingTemperatureLow, item.operatingTemperatureTop]" min="-40" max="60" step="1" (valueChange)="updateOperatingTemperatures($event)"></app-slider>
         </div>
@@ -190,51 +209,13 @@
   </mat-accordion>
   <br>
 </div>
-<!--
-  brand: string;
-  model: string;
-  releasedIn: number;
 
-  thumbnail: string;
-  description: string;
-
-  weight: number;
-  payload: number;
-  ipRating: string;
-  gap: number;
-
-  tireSize: number;
-  tireType: 'Inflatable' | 'Full' | 'Other';
-  tirePressure: number;
-
-  factorySpeed: number;
-  maxSpeed: number;
-  distanceMax: number;
-  maxSlope: number;
-
-  frontLight: boolean;
-  rearLight: boolean;
-  turnSignal: boolean;
-  horn: boolean;
-
-  batteryCapacity: number;
-  chargingTime: number;
-
-  powerRating: number;
-  operatingTemperatureLow: number;
-  operatingTemperatureTop: number;
-
-  android: boolean;
-  ios: boolean;
-  connection: string;
-
--->
 <div mat-dialog-actions>
   <span class="flex-spacer"></span>
   <button mat-dialog-close mat-button color="warn" i18n="@@CANCEL">Annuler</button>
   <button mat-button color="primary" (click)="save()">
     <fa-icon [icon]="faSave" size="lg"></fa-icon>&nbsp;&nbsp;&nbsp;
-    <span i18n="@@SAVE">Sauvegarder</span>
+    <ng-container i18n="@@SAVE">Sauvegarder</ng-container>
   </button>
 </div>
 
