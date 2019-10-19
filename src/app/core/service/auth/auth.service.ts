@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {auth, User} from 'firebase';
 import {AngularFireAuth} from '@angular/fire/auth';
 
@@ -16,7 +16,9 @@ export class AuthService {
   }
 
   googleLogin() {
-    return this.oAuthLogin(new auth.GoogleAuthProvider());
+    const googleAuthProvider = new auth.GoogleAuthProvider();
+    googleAuthProvider.addScope('email');
+    return this.oAuthLogin(googleAuthProvider);
   }
 
   githubLogin() {
@@ -33,7 +35,6 @@ export class AuthService {
 
   private oAuthLogin(provider: auth.AuthProvider) {
     return this.afAuth.auth.signInWithPopup(provider).then((credential: auth.UserCredential) => {
-//      console.log(credential);
     });
   }
 }
