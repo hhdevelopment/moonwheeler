@@ -29,7 +29,6 @@ export class DocRatingsService {
         }
         rating.value = totalRatings / rating.users;
         doc.rating = rating;
-        console.log(rating);
         return fromPromise(this.afs.collection<RatingsUser>(collection).doc(id).update(doc));
       })
     );

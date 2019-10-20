@@ -9,6 +9,6 @@
   // Define any styles affected by the theme.
   h2-star-rating {
     // Use mat-color to extract individual colors from a palette.
-    color: mat-color($accent, A400);
+    color: mat-color($accent);
   }
 }

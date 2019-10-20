@@ -37,7 +37,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header="brand"><ng-container i18n="@@BRAND_MODEL">Marque / Modèle</ng-container></th>
       <td mat-cell *matCellDef="let element">
         <ng-container>{{element.brand}}&nbsp;{{element.model}}</ng-container><br>
-        <h2-star-rating [value]="element?.rating?.value || 0" size="xs" disabled="true" matTooltip="Evaluation de {{element?.rating?.users || 0}} utilisateur(s)"></h2-star-rating>
+        <h2-star-rating [value]="element?.rating?.value || 0" size="xs" disabled="true" matTooltip="Evaluation de {{element?.rating?.users || 0}} utilisateur(s)" [class.no-rating]="(element?.rating?.users || 0) === 0"></h2-star-rating>
       </td>
     </ng-container>
 
