@@ -29,7 +29,7 @@ export const SHARED_COMPONENTS: any[] = [
   AvatarComponent,
   StringChipListComponent,
   SectionHeaderComponent,
-  UploadPictureComponent
+  UploadPictureComponent,
 ];
 
 export {RedirectComponent} from './redirect/redirect.component';

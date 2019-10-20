@@ -43,6 +43,7 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {AngularFireFunctionsModule} from '@angular/fire/functions';
 import {AngularFireAuthGuardModule} from '@angular/fire/auth-guard';
+import {StarRatingModule} from '@hhangular/star-rating';
 
 const MODULES: any[] = [
   FlexLayoutModule,
@@ -94,6 +95,7 @@ const FIRE_BASE = [
     MODULES,
     MarkdownModule.forRoot({loader: HttpClient}),
     StoreModule,
+    StarRatingModule
   ],
   exports: [
     MODULES,
@@ -101,11 +103,12 @@ const FIRE_BASE = [
     ReactiveFormsModule,
     MarkdownModule,
     StoreModule,
+    StarRatingModule,
     FIRE_BASE,
-    SHARED_COMPONENTS,
+    SHARED_COMPONENTS
   ],
   declarations: [
-    SHARED_COMPONENTS,
+    SHARED_COMPONENTS
   ],
   providers: [
     {provide: APP_BASE_HREF, useFactory: (platformLocation: PlatformLocation) => platformLocation.getBaseHrefFromDOM(), deps: [PlatformLocation]},

@@ -16,6 +16,8 @@ export class UploadPictureComponent {
 
   private _path: string;
 
+  private pictureUpdated = false;
+
   faFileDownload = faFileDownload;
   url: string;
   uploading = false;
@@ -59,9 +61,10 @@ export class UploadPictureComponent {
       this.uploadPicture(path, files.item(0)).pipe(
         filter(p => p === 100),
         flatMap(p => {
-          return this.deletePreviousPicture();
+          return this.pictureUpdated ? this.deletePreviousPicture() : of(null);
         })
       ).subscribe(() => {
+        this.pictureUpdated = true;
         this.path = path;
         this.pictureUpdate.emit(path);
       });

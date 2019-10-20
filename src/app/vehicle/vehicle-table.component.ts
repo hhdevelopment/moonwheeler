@@ -8,15 +8,16 @@ import {faColumns, faGripLines, faPencilAlt, faTimes} from '@fortawesome/free-so
 import {UserService} from '../core/service/user/user.service';
 import {ElectricAbstractService} from '../core/service/electric-vehicle/electric-abstract.service';
 import {ConfirmDeleteDialogComponent, CreateFromJsonDialogComponent} from './dialog';
-import {catchError, filter, flatMap, mergeMap} from 'rxjs/operators';
+import {catchError, filter, flatMap} from 'rxjs/operators';
 import {DeletedSnackBarComponent, SavedSnackBarComponent} from './snack-bar';
-import {empty, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {EditDialogComponent} from './dialog/edit-dialog.component';
-import {tryCatch} from 'rxjs/internal-compatibility';
+import {RatingsUserService} from '../core/service/user/ratings-user.service';
 
 export abstract class VehicleTableComponent<T extends ElectricVehicle> implements OnInit {
 
   protected constructor(
+    private ratingsUserService: RatingsUserService,
     protected snackBar: MatSnackBar,
     private afStorage: AngularFireStorage,
     protected electricVehicleService: ElectricAbstractService<T>,
@@ -36,9 +37,11 @@ export abstract class VehicleTableComponent<T extends ElectricVehicle> implement
   overflownElement: T | null;
   url: string;
   claims: Partial<Claims>;
+  ratingsUser: Partial<RatingsUser> = {};
 
   uid: string;
   dataSource = new MatTableDataSource<T>();
+
   @ViewChild(MatPaginator, {static: true})
   paginator: MatPaginator;
 
@@ -50,6 +53,9 @@ export abstract class VehicleTableComponent<T extends ElectricVehicle> implement
   abstract openEditSpecificDialog(item: Partial<T>): MatDialogRef<EditDialogComponent<T>, Partial<T>>;
 
   ngOnInit() {
+    this.ratingsUserService.getRatings().subscribe((ratingsUser: RatingsUser) => {
+      this.ratingsUser = ratingsUser || {};
+    });
     this.userService.getClaims().subscribe((claims: Claims) => {
       this.claims = claims;
     });
@@ -125,7 +131,9 @@ export abstract class VehicleTableComponent<T extends ElectricVehicle> implement
     if (this.expandedElement !== $event) {
       if (!!$event.thumbnail) {
         const ref: AngularFireStorageReference = this.afStorage.ref($event.thumbnail);
-        ref.getDownloadURL().subscribe(url => {
+        ref.getDownloadURL().pipe(
+          catchError(err => of(null))
+        ).subscribe(url => {
           this.url = url;
           this.expandedElement = $event;
         });
@@ -146,7 +154,7 @@ export abstract class VehicleTableComponent<T extends ElectricVehicle> implement
     return this.expandedElement && this.expandedElement.contributors && this.expandedElement.contributors[0].uid === this.uid;
   }
 
-  actionOnItem(event: { item: T, action: string }) {
+  actionOnItem(event: { item: any, action: string }) {
     if ('edit' === event.action) {
       this.openEditVehicleDialog(event.item, false);
     } else if ('delete' === event.action) {

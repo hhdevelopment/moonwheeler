@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="drawer.toggle()">
+      <fa-icon [icon]="faBars" size="md"></fa-icon>
+    </button>
+    <span i18n="@@VEHICLES">Véhicules</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-drawer-container fxFlex autosize>
+  <mat-drawer #drawer [mode]="mode" [opened]="open">
+    <app-vehicle-nav></app-vehicle-nav>
+  </mat-drawer>
+  <router-outlet></router-outlet>
+</mat-drawer-container>

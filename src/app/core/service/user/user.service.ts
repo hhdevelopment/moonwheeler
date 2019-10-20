@@ -3,6 +3,7 @@ import {User} from 'firebase';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import {AngularFirestore} from '@angular/fire/firestore';
 import IdTokenResult = firebase.auth.IdTokenResult;
 
 @Injectable({
@@ -11,6 +12,7 @@ import IdTokenResult = firebase.auth.IdTokenResult;
 export class UserService {
 
   constructor(
+    private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
   ) {
   }

@@ -1,6 +1,7 @@
 interface ElectricVehicle extends FirebaseDocument {
   brand: string;
   model: string;
+  rating: DocRating;
   releasedIn: number;
   thumbnail: string;
   description: string;

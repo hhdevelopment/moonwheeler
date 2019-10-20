@@ -1,4 +1,0 @@
-<mat-toolbar *ngIf="!!uid && !!claims">
-  <app-row-action-button *ngIf="actions.edit" [enabled]="claims.allowUpdate || contribuableIsUser()" [icon]="faPencilAlt" (action)="click($event, 'edit')"></app-row-action-button>
-  <app-row-action-button *ngIf="actions.delete" [enabled]="claims.allowDelete || contribuableIsUser()" [icon]="faTimes" (action)="click($event, 'delete')"></app-row-action-button>
-</mat-toolbar>

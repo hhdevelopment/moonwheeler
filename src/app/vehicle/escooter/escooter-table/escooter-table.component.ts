@@ -9,6 +9,7 @@ import {VehicleTableComponent} from '../../vehicle-table.component';
 import {ElectricScooterService} from '../../../core/service/electric-vehicle/electric-scooter.service';
 import {EscooterEditDialogComponent} from '../escooter-edit-dialog/escooter-edit-dialog.component';
 import {EditDialogComponent} from '../../dialog/edit-dialog.component';
+import {RatingsUserService} from '../../../core/service/user/ratings-user.service';
 
 @Component({
   selector: 'app-escooter-table',
@@ -25,13 +26,14 @@ import {EditDialogComponent} from '../../dialog/edit-dialog.component';
 })
 export class EscooterTableComponent<T extends ElectricScooter> extends VehicleTableComponent<ElectricScooter> {
   constructor(
+    ratingsUserService: RatingsUserService,
     snackBar: MatSnackBar,
     electricScooterService: ElectricScooterService,
     afStorage: AngularFireStorage,
     userService: UserService,
     dialog: MatDialog,
   ) {
-    super(snackBar, afStorage, electricScooterService, userService, dialog);
+    super(ratingsUserService, snackBar, afStorage, electricScooterService, userService, dialog);
   }
 
   @LocalStored(4)
