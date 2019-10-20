@@ -3,13 +3,12 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 import {faArchive, faBars} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  selector: 'app-vehicle-main',
+  templateUrl: './vehicle-main.component.html',
+  styleUrls: ['./vehicle-main.component.scss']
 })
-export class MainComponent implements OnInit {
+export class VehicleMainComponent implements OnInit {
 
-  faArchive = faArchive;
   faBars = faBars;
   open = true;
   mode: 'over' | 'push' | 'side' = 'side';
@@ -24,4 +23,5 @@ export class MainComponent implements OnInit {
         this.mode = result.matches ? 'over' : 'side';
       });
   }
+
 }

@@ -1,6 +1,5 @@
 <div mat-dialog-title>
   <ng-container i18n="@@EDIT_OR_CREATE_EUC">Éditer ou créer une monoroue</ng-container>
-  <button tabindex="-1" class="float-right" mat-icon-button mat-dialog-close><fa-icon [icon]="faTimes"></fa-icon></button>
 </div>
 <div mat-dialog-content fxLayout="column">
   <mat-label i18n="@@REFERENCE">Référence</mat-label>
@@ -193,7 +192,7 @@
 
 <div mat-dialog-actions>
   <span class="flex-spacer"></span>
-  <button mat-dialog-close mat-button color="warn" i18n="@@CANCEL">Annuler</button>
+  <button mat-button color="warn" i18n="@@CANCEL" (click)="cancel()">Annuler</button>
   <button mat-button color="primary" (click)="save()">
     <fa-icon [icon]="faSave" size="lg"></fa-icon>&nbsp;&nbsp;&nbsp;
     <ng-container i18n="@@SAVE">Sauvegarder</ng-container>

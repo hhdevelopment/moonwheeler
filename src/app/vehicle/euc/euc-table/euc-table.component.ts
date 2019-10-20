@@ -9,6 +9,7 @@ import {ElectricUnicycleService} from '../../../core/service/electric-vehicle/el
 import {VehicleTableComponent} from '../../vehicle-table.component';
 import {EucEditDialogComponent} from '../euc-edit-dialog/euc-edit-dialog.component';
 import {EditDialogComponent} from '../../dialog/edit-dialog.component';
+import {RatingsUserService} from '../../../core/service/user/ratings-user.service';
 
 @Component({
   selector: 'app-euc-table',
@@ -26,13 +27,14 @@ import {EditDialogComponent} from '../../dialog/edit-dialog.component';
 export class EucTableComponent extends VehicleTableComponent<ElectricUnicycle> {
 
   constructor(
+    ratingsUserService: RatingsUserService,
     snackBar: MatSnackBar,
     electricUnicycleService: ElectricUnicycleService,
     afStorage: AngularFireStorage,
     userService: UserService,
     dialog: MatDialog,
   ) {
-    super(snackBar, afStorage, electricUnicycleService, userService, dialog);
+    super(ratingsUserService, snackBar, afStorage, electricUnicycleService, userService, dialog);
   }
 
   @LocalStored(1)

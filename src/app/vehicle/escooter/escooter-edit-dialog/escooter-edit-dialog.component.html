@@ -1,6 +1,5 @@
 <div mat-dialog-title>
   <ng-container i18n="@@EDIT_OR_CREATE_EUC">Éditer ou créer une trottinette</ng-container>
-  <button tabindex="-1" class="float-right" mat-icon-button mat-dialog-close><fa-icon [icon]="faTimes"></fa-icon></button>
 </div>
 <div mat-dialog-content fxLayout="column">
   <mat-label i18n="@@REFERENCE">Référence</mat-label>
@@ -31,7 +30,7 @@
       </mat-expansion-panel-header>
       <div fxLayout="column" fxLayoutGap="10px">
         <div fxLayout="row" fxLayoutGap="10px">
-          <app-upload-picture [path]="item.thumbnail" (pictureUpdate)="item.thumbnail = $event"></app-upload-picture>
+          <app-upload-picture [path]="item.thumbnail" (pictureUpdate)="updatePicture($event)"></app-upload-picture>
           <div *ngIf="descriptionEdit; then descriptionEditMode else descriptionPreviewMode">
             <!-- template will replace this div -->
           </div>
@@ -212,7 +211,7 @@
 
 <div mat-dialog-actions>
   <span class="flex-spacer"></span>
-  <button mat-dialog-close mat-button color="warn" i18n="@@CANCEL">Annuler</button>
+  <button mat-button color="warn" (click)="cancel()" i18n="@@CANCEL">Annuler</button>
   <button mat-button color="primary" (click)="save()">
     <fa-icon [icon]="faSave" size="lg"></fa-icon>&nbsp;&nbsp;&nbsp;
     <ng-container i18n="@@SAVE">Sauvegarder</ng-container>

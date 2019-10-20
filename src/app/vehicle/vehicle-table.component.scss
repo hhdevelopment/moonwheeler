@@ -25,12 +25,6 @@ tr.detail-row {
 tr.element-row {
   cursor: pointer;
 }
-tr.element-row:not(.expanded-row):hover {
-  background: #3f51b5;
-}
-tr.element-row:not(.expanded-row):hover > td {
-  color: white;
-}
 .element-row td {
   border-bottom-width: 0;
 }
@@ -59,4 +53,8 @@ tr.element-row > td:last-child {
   height: 200px;
   min-width: 160px;
   background-position: center;
+}
+td.mat-column-brand-model,
+th.mat-column-brand-model {
+  min-width: 200px;
 }

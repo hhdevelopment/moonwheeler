@@ -8,13 +8,7 @@
 </mat-toolbar>
 <mat-drawer-container autosize>
   <mat-drawer #drawer [mode]="mode" [opened]="open">
-    <mat-list routerLinkActive="active">
-      <a mat-list-item routerLink="users" [routerLinkActive]="['active']">
-        <fa-icon [icon]="faUsers"></fa-icon>&nbsp;<span i18n="@@USERS">Utilisateurs</span>
-      </a>
-    </mat-list>
+    <app-admin-nav></app-admin-nav>
   </mat-drawer>
-
   <router-outlet></router-outlet>
-
 </mat-drawer-container>

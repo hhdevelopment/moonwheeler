@@ -1,0 +1,23 @@
+// Import library functions for theme creation.
+@import '~@angular/material/theming';
+
+// Define a mixin that accepts a theme and outputs the theme-specific styles.
+@mixin admin-nav-theme($theme) {
+  // Extract the palettes you need from the theme definition.
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  // Define any styles affected by the theme.
+  app-admin-nav a:hover,
+  app-admin-nav a:hover:active,
+  app-admin-nav a:hover.active {
+    color: mat-color($accent) !important;
+  }
+
+  app-admin-nav a:active,
+  app-admin-nav a.active {
+    color: mat-color($primary) !important;
+  }
+
+}

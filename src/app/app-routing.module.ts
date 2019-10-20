@@ -7,9 +7,6 @@ import {LocalStored} from '@hhangular/store';
 import {SharedModule} from './shared/shared.module';
 import {RedirectComponent} from './shared';
 import {canActivate, hasCustomClaim} from '@angular/fire/auth-guard';
-import {MainComponent} from './vehicle/main/main.component';
-import {EucMainComponent} from './vehicle/euc';
-import {EscooterMainComponent} from './vehicle/escooter';
 
 const adminOnly = hasCustomClaim('admin');
 

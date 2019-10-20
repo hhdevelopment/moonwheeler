@@ -4,7 +4,7 @@ import {AngularFireFunctions} from '@angular/fire/functions';
 import {faFacebook, faGithub, faGoogle} from '@fortawesome/free-brands-svg-icons';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {toolbarAppear} from '../../shared/animations';
-import {faSync, faUser, faUserCircle} from '@fortawesome/free-solid-svg-icons';
+import {faSync, faUserCircle} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-users',

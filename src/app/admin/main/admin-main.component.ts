@@ -3,13 +3,12 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 import {faBars, faUsers} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  selector: 'app-admin-main',
+  templateUrl: './admin-main.component.html',
+  styles: [``]
 })
-export class MainComponent implements OnInit {
+export class AdminMainComponent implements OnInit {
   faBars = faBars;
-  faUsers = faUsers;
   open = true;
   mode: 'over' | 'push' | 'side' = 'side';
 

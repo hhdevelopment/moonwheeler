@@ -2,18 +2,20 @@ import {OnInit} from '@angular/core';
 import {faCalendarCheck, faSave, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {MatDialogRef, MatSnackBar} from '@angular/material';
 import {ObjectsService} from '../../core/service/objects/objects.service';
+import {Observable, of} from 'rxjs';
+import {AngularFireStorage, AngularFireStorageReference} from '@angular/fire/storage';
+import {catchError} from 'rxjs/operators';
 
 export class EditDialogComponent<T extends ElectricVehicle> implements OnInit {
 
   faSave = faSave;
-  faTimes = faTimes;
   faCalendarCheck = faCalendarCheck;
 
   descriptionEdit = true;
   currentYear: number;
   item: Partial<T>;
 
-
+  pictureUpdated = false;
   brands: string[];
   tireTypes: string[];
   batteryTypes: string[];
@@ -23,6 +25,7 @@ export class EditDialogComponent<T extends ElectricVehicle> implements OnInit {
   payloads: number[] = [40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180];
 
   constructor(public dialogRef: MatDialogRef<EditDialogComponent<T>>,
+              private afStorage: AngularFireStorage,
               private snackBar: MatSnackBar,
               private objectsService: ObjectsService,
               private data: Partial<T>) {
@@ -62,5 +65,32 @@ export class EditDialogComponent<T extends ElectricVehicle> implements OnInit {
 
   updateConnection($event: string[]) {
     this.item.connections = $event;
+  }
+
+  updatePicture($event: string) {
+    this.item.thumbnail = $event;
+    this.pictureUpdated = true;
+  }
+
+  cancel() {
+    if (this.pictureUpdated) {
+      this.deletePicture(this.item.thumbnail).subscribe(() => {
+        this.item.thumbnail = this.data.thumbnail;
+        this.dialogRef.close();
+      });
+    } else {
+      this.dialogRef.close();
+    }
+  }
+
+  private deletePicture(path: string): Observable<any> {
+    if (!!path) {
+      const ref: AngularFireStorageReference = this.afStorage.ref(path);
+      return ref.delete().pipe(
+        catchError(err => of(null))
+      );
+    } else {
+      return of(null);
+    }
   }
 }
